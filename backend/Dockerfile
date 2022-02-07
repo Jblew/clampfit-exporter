@@ -5,6 +5,7 @@ ADD package.json package-lock.json /app/
 RUN npm ci
 
 ADD . /app/
+RUN npm run test
 RUN npm run build
 
 CMD ["npm", "run", "start:docker"]
