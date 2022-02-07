@@ -27,7 +27,10 @@ export function PatchForm() {
         setLoading(false);
         resetForm();
       },
-      (err) => setError(`${err}`)
+      (err) => {
+        setError(`${err}`);
+        setLoading(false);
+      }
     );
   }
   function resetForm() {
