@@ -22,7 +22,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: backend
-          image: nginx:1.21-alpine
+          image: ghcr.io/jblew/clampfit-exporter-backend:1.1.0
           ports: [{ containerPort: 80 }]
           env:
             - name: PORT
