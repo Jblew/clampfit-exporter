@@ -12,7 +12,6 @@ export function TopNav() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
           </Nav>
           <Nav>
             <NavAuth />
