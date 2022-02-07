@@ -4,7 +4,7 @@ import { envMust } from "./utils";
 
 export function getAuthMiddleware() {
   return auth({
-    authRequired: true,
+    authRequired: false,
     auth0Logout: true,
     secret: envMust("OIDC_AUTH_SECRET"),
     baseURL: envMust("BASE_URL"),
