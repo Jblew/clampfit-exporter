@@ -1,5 +1,6 @@
 export interface PatchSample {
   ID: string;
+  name?: string;
   date: Date;
   category: number;
   traceNumber: number;

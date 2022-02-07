@@ -11,6 +11,9 @@ export class PatchSample implements domain.PatchSample {
   @PrimaryGeneratedColumn("uuid")
   ID!: string;
 
+  @Column()
+  name!: string;
+
   @CreateDateColumn()
   date!: Date;
 
