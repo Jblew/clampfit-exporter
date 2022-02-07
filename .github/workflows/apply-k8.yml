@@ -1,4 +1,4 @@
-name: "app using kubectl"
+name: "apply k8"
 
 on:
   push:
