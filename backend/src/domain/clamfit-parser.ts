@@ -32,6 +32,35 @@ export function parseClampfitSummary(summary: string): PatchSample {
     halfWidthMeanMs: getTabularizedMean(lines, "half-width"),
     halfWidthSDMs: getTabularizedSD(lines, "half-width"),
     halfWidthCount: getTabularizedCount(lines, "half-width"),
+    instantanoeusFrequencyMeanHz: getTabularizedMean(
+      lines,
+      "instantaneous\\sfrequency"
+    ),
+    instantanoeusFrequencySDHz: getTabularizedSD(
+      lines,
+      "instantaneous\\sfrequency"
+    ),
+    instantanoeusFrequencyCount: getTabularizedCount(
+      lines,
+      "instantaneous\\sfrequency"
+    ),
+    intereventIntervalMeanMs: getTabularizedMean(
+      lines,
+      "interevent\\sinterval"
+    ),
+    intereventIntervalSDMs: getTabularizedSD(lines, "interevent\\sinterval"),
+    intereventIntervalCount: getTabularizedCount(
+      lines,
+      "interevent\\sinterval"
+    ),
+    pOpenForSpecifiedLevel: matchLine(
+      lines,
+      /^p\(open\)\sfor\sspecified\slevel[^=]+=\s+([0-9\.]+).*$/gi
+    ),
+    npOpenForAllLevels: matchLine(
+      lines,
+      /^np\(open\)\sfor\sall\slevel[^=]+=\s+([0-9\.]+).*$/gi
+    ),
   } as PatchSample;
 }
 
