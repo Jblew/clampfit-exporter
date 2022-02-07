@@ -8,5 +8,10 @@
 		"editor.formatOnSave": true,
 		"editor.formatOnSaveMode": "file",
 		"editor.formatOnPaste": true,
+		"github-actions.workflows.pinned.workflows": [
+			"clampfit-exporter/.github/workflows/publish-frontend-to-ghcr.yml",
+			"clampfit-exporter/.github/workflows/publish-backend-to-ghcr.yml",
+			"clampfit-exporter/.github/workflows/apply-k8.yml"
+		],
 	}
 }
