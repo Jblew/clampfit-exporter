@@ -1,7 +1,7 @@
 import express from "express";
 import { envMust } from "./utils";
 import { authOr403 } from "@/auth";
-import { getConnection, getRepository } from "typeorm";
+import { getRepository } from "typeorm";
 import { PatchSample } from "./entity/PatchSample";
 
 const frontendRedirectURL = envMust("FRONTEND_REDIRECT_URL");
