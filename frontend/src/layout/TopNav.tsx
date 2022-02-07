@@ -1,14 +1,12 @@
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import { useTranslation } from "react-i18next";
 
 export function TopNav() {
-  const { t } = useTranslation();
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">{t("Prioratus")}</Navbar.Brand>
+        <Navbar.Brand href="#home">Clampfit-exporter</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
