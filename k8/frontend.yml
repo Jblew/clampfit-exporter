@@ -22,5 +22,5 @@ spec:
       restartPolicy: Always
       containers:
         - name: frontend
-          image: ghcr.io/jblew/clampfit-exporter-frontend:1.9.3
+          image: ghcr.io/jblew/clampfit-exporter-frontend:1.11.0
           ports: [{ containerPort: 80 }]
