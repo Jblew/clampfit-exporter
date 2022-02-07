@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  labels:
+    service: db
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    service: dbpod
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-set
+spec:
+  selector:
+    matchLabels:
+      service: dbpod
+  serviceName: "db-service"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: dbpod
+    spec:
+      containers:
+        - name: db-service
+          image: postgres:14.1-alpine
+          env:
+            - name: POSTGRES_PASSWORD
+              value: 45tsgrbesv4qwWBSFGEG9642WRHT
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              subPath: postgres
+              name: db-pvc
+      restartPolicy: Always
+      initContainers:
+        - name: pgsql-data-permission-fix
+          image: busybox
+          command: ["/bin/chmod", "-R", "777", "/data"]
+          volumeMounts:
+            - name: db-pvc
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: db-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
