@@ -14,6 +14,9 @@ export class PatchSample implements domain.PatchSample {
   @Column()
   name!: string;
 
+  @Column()
+  email!: string;
+
   @CreateDateColumn()
   date!: Date;
 
