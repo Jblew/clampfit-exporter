@@ -1,3 +1,7 @@
+:root {
+  --bs-body-bg: #091540;
+}
+
 body,
 html {
   background: #091540;
