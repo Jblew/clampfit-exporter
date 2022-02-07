@@ -18,7 +18,7 @@ export function PatchForm() {
     setError("");
     send().then(
       () => setLoading(false),
-      (err) => setError(err)
+      (err) => setError(`${err}`)
     );
   }
   return (
