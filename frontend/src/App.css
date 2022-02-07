@@ -1,3 +1,8 @@
+:root {
+  --bs-body-bg: #091540;
+  --bs-body-color: #eee;
+}
+
 .App {
   text-align: center;
 }
