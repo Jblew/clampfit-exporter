@@ -23,8 +23,9 @@ export function SampelsTableView() {
       }
     );
 
-    async function doLoadSamples(): Promise<any[]> {
-      return getFromApi("/samples");
+    async function doLoadSamples(): Promise<PatchSample[]> {
+      const resp: { samples: PatchSample[] } = await getFromApi("/samples");
+      return resp.samples;
     }
   }
 
