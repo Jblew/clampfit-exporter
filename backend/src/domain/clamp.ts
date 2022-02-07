@@ -1,4 +1,5 @@
-export interface PatchTest {
+export interface PatchSample {
+  ID: string;
   date: Date;
   category: number;
   traceNumber: number;
