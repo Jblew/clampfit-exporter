@@ -6,8 +6,32 @@ export function getApiURL(endpointURL: string): string {
 }
 
 export async function getFromApi<T>(endpointURL: string): Promise<T> {
+  return await genericApiFetch(endpointURL, "GET");
+}
+
+export async function postToApi<D, T>(
+  endpointURL: string,
+  data: D
+): Promise<T> {
+  return await genericApiFetch(endpointURL, "POST", data);
+}
+
+async function genericApiFetch(
+  endpointURL: string,
+  method: "GET" | "POST",
+  data?: any
+) {
   const fullURL = getApiURL(endpointURL);
-  const resp = await fetch(fullURL);
+  const resp = data
+    ? await fetch(fullURL, {
+        method,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+    : await fetch(fullURL, { method });
   if (resp.status !== 200) {
     throw new ApiHTTPError(
       `Got ${resp.status} response from ${fullURL}`,

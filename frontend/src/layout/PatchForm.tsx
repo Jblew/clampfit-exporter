@@ -2,14 +2,20 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { useState } from "react";
-import { getFromApi } from "api";
+import { postToApi } from "api";
 
 export function PatchForm() {
+  const [name, setName] = useState("");
+  const [clampfitPaste, setClampfitPaste] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function send() {
-    return getFromApi("/add_sample");
+    const data = {
+      name,
+      clampfitPaste,
+    };
+    return postToApi("/add_sample", data);
   }
 
   function handleSubmit(event: any) {
@@ -17,9 +23,16 @@ export function PatchForm() {
     setLoading(true);
     setError("");
     send().then(
-      () => setLoading(false),
+      () => {
+        setLoading(false);
+        resetForm();
+      },
       (err) => setError(`${err}`)
     );
+  }
+  function resetForm() {
+    setName("");
+    setClampfitPaste("");
   }
   return (
     <>
@@ -27,7 +40,12 @@ export function PatchForm() {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formSampleName">
             <Form.Label>Sample name (optional)</Form.Label>
-            <Form.Control type="text" placeholder="Enter sample name" />
+            <Form.Control
+              type="text"
+              placeholder="Enter sample name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <Form.Text className="text-muted">
               This is just optional ;)
             </Form.Text>
@@ -35,7 +53,12 @@ export function PatchForm() {
 
           <Form.Group className="mb-3" controlId="exampleForm.clampfitPaste">
             <Form.Label>Paste clipboard from clampfit here</Form.Label>
-            <Form.Control as="textarea" rows={3} />
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={clampfitPaste}
+              onChange={(e) => setClampfitPaste(e.target.value)}
+            />
           </Form.Group>
 
           <Button variant="primary" type="submit">
