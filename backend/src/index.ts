@@ -10,11 +10,6 @@ async function run() {
   const port = process.env.PORT || 3000;
   const routeBase = process.env.ROUTE_BASE || "/";
 
-  const credentials = {
-    user: envMust("CREDENTIALS_USER"),
-    password: envMust("CREDENTIALS_PASSWORD"),
-  };
-
   await initDatabase();
 
   app.use(
