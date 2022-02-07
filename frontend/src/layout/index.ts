@@ -1,1 +1,2 @@
-export * from './TopNav';
+export * from "./TopNav";
+export * from "./Home";

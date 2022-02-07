@@ -1,6 +1,7 @@
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import { NavAuth } from "./NavAuth";
 
 export function TopNav() {
   return (
@@ -12,6 +13,9 @@ export function TopNav() {
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">Link</Nav.Link>
+          </Nav>
+          <Nav>
+            <NavAuth />
           </Nav>
         </Navbar.Collapse>
       </Container>
