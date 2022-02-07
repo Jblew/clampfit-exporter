@@ -9,7 +9,7 @@ export interface PatchSample {
   amplitudeSampleCount: StringNumber;
   halfWidthMeanMs: StringNumber;
   halfWidthSDMs: StringNumber;
-  halfWitdthCount: StringNumber;
+  halfWidthCount: StringNumber;
   instantanoeusFrequencyMeanHz: StringNumber;
   instantanoeusFrequencySDHz: StringNumber;
   instantanoeusFrequencyCount: StringNumber;

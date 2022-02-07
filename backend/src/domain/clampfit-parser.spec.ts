@@ -39,7 +39,7 @@ describe("parseClampfitSummary", () => {
   });
 
   it("gets Half-width count", () => {
-    expect(parseClampfitSummary(getRawSample()).halfWitdthCount).to.be.equal(
+    expect(parseClampfitSummary(getRawSample()).halfWidthCount).to.be.equal(
       "3685"
     );
   });

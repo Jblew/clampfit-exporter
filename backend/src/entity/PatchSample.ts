@@ -39,7 +39,7 @@ export class PatchSample implements domain.PatchSample {
   halfWidthSDMs!: string;
 
   @Column()
-  halfWitdthCount!: string;
+  halfWidthCount!: string;
 
   @Column()
   instantanoeusFrequencyMeanHz!: string;
