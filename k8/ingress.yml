@@ -10,7 +10,7 @@ metadata:
   name: clampfit-exporter-ingress
 spec:
   rules:
-    - host: clampfit-exporter.jblew.pl
+    - host: clamper.jblew.pl
       http:
         paths:
           - path: "/api/?(.*)"
@@ -29,5 +29,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - clampfit-exporter.jblew.pl
-      secretName: clampfit-exporter-tls5
+        - clamper.jblew.pl
+      secretName: clampfit-exporter-tls6
