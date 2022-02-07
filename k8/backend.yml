@@ -22,10 +22,20 @@ spec:
       restartPolicy: Always
       containers:
         - name: backend
-          image: ghcr.io/jblew/clampfit-exporter-backend:1.1.0
+          image: ghcr.io/jblew/clampfit-exporter-backend:1.2.0
           ports: [{ containerPort: 80 }]
           env:
             - name: PORT
               value: "80"
             - name: BASE_URL
               value: "https://clamper.jblew.pl/api"
+            - name: CREDENTIALS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: user-credentials
+                  key: user
+            - name: CREDENTIALS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: user-credentials
+                  key: password

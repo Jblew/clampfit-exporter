@@ -2,11 +2,17 @@ import express from "express";
 import { getRoutes } from "./router";
 import morgan from "morgan";
 import { initDatabase } from "./db";
+import { envMust } from "./utils";
 
 async function run() {
   const app = express();
   const port = process.env.PORT || 3000;
   const routeBase = process.env.ROUTE_BASE || "/";
+
+  const credentials = {
+    user: envMust("CREDENTIALS_USER"),
+    password: envMust("CREDENTIALS_PASSWORD"),
+  };
 
   await initDatabase();
 
