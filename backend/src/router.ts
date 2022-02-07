@@ -20,8 +20,8 @@ export function getRoutes() {
   });
 
   router.post("/add_sample", authOr403(), (req, res) => {
-    console.log(req.body);
-    console.log(req.params);
+    console.log("body=", req.body);
+    console.log("params=", req.params);
     res.send(JSON.stringify(req.body));
   });
 
