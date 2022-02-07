@@ -1,9 +1,10 @@
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 export function Home() {
   return (
-    <Container>
-      <Row>
-        <Col>1 of 1</Col>
-      </Row>
-    </Container>
+    <Row>
+      <Col>Welcome</Col>
+    </Row>
   );
 }
