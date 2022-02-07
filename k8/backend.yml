@@ -22,20 +22,27 @@ spec:
       restartPolicy: Always
       containers:
         - name: backend
-          image: ghcr.io/jblew/clampfit-exporter-backend:1.2.0
+          image: ghcr.io/jblew/clampfit-exporter-backend:1.3.0
           ports: [{ containerPort: 80 }]
           env:
             - name: PORT
               value: "80"
             - name: BASE_URL
               value: "https://clamper.jblew.pl/api"
-            - name: CREDENTIALS_USER
+            - name: FRONTEND_REDIRECT_URL
+              value: "https://clamper.jblew.pl/"
+            - name: OIDC_ISSUER_BASEURL
               valueFrom:
                 secretKeyRef:
-                  name: user-credentials
-                  key: user
-            - name: CREDENTIALS_PASSWORD
+                  name: oidc
+                  key: issuer_baseurl
+            - name: OIDC_AUTH_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: user-credentials
-                  key: password
+                  name: oidc
+                  key: auth_secret
+            - name: OIDC_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: oidc
+                  key: client_id
