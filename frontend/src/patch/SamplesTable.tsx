@@ -25,7 +25,7 @@ export function SamplesTable({
             <td>{sample.date}</td>
             <td>{sample.name}</td>
             <td>{sample.amplitudeMeanPa}</td>
-            <td>{sample.pOpenForSpecifiedLevel}</td>
+            <td>{sample.npOpenForAllLevels}</td>
             <td>
               <Button
                 onClick={() => deleteSample(sample.ID)}

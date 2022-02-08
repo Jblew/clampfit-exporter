@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 
-const defaultChecked = [
-  "traceNumber",
-  "amplitudeMeanPa",
-  "pOpenForSpecifiedLevel",
-];
+const defaultChecked = ["traceNumber", "amplitudeMeanPa", "npOpenForAllLevels"];
 
 export function ConfigurableTable({
   rows,
