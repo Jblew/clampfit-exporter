@@ -1,31 +1,9 @@
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PatchForm } from "./PatchForm";
-import { SampelsTableView } from "./SamplesTableView";
+import { PatchView } from "../patch";
 
 export function Home() {
   return (
     <>
-      <Row className="mt-5">
-        <Col>
-          <h1>Adding patch sample</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <PatchForm />
-        </Col>
-      </Row>
-      <Row className="mt-5">
-        <Col>
-          <h1>Previous samples</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <SampelsTableView />
-        </Col>
-      </Row>
+      <PatchView />
     </>
   );
 }

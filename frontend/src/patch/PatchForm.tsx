@@ -2,30 +2,26 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { useState } from "react";
-import { postToApi } from "api";
-
-export function PatchForm() {
+import { saveClampfitPaste } from "./api";
+import { PatchSample } from "appdomain";
+export function PatchForm({
+  setSamples,
+}: {
+  setSamples: (samples: PatchSample[]) => void;
+}) {
   const [name, setName] = useState("");
   const [clampfitPaste, setClampfitPaste] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function send() {
-    const data = {
-      name,
-      clampfitPaste,
-    };
-    return postToApi("/add_sample", data);
-  }
-
   function handleSubmit(event: any) {
-    console.log(event);
     setLoading(true);
     setError("");
-    send().then(
-      () => {
+    saveClampfitPaste({ name, clampfitPaste }).then(
+      (samples) => {
         setLoading(false);
         resetForm();
+        setSamples(samples);
       },
       (err) => {
         setError(`${err}`);
