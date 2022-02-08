@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  backend:
+    build: backend
+    environment:
+      PORT: 80
+      ROUTE_BASE: '/api'
+      BASE_URL: http://localhost:3002/api
+      FRONTEND_REDIRECT_URL: http://localhost:3000/
+      OIDC_ISSUER_BASEURL: https://jblew.eu.auth0.com
+      OIDC_AUTH_SECRET: ${OIDC_AUTH_SECRET}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+    ports:
+      - 3002:80
+    depends_on:
+      - db
+
+  frontend:
+    build: frontend
+    ports:
+      - 3000:80
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 45tsgrbesv4qwWBSFGEG9642WRHT
+    volumes:
+      - db_pgdata:/var/lib/postgresql/data
+
+volumes:
+  db_pgdata:
