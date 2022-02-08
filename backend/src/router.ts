@@ -1,9 +1,7 @@
 import express from "express";
 import { envMust } from "./utils";
 import { authOr403 } from "@/auth";
-import { getRepository } from "typeorm";
-import { PatchSample } from "./entity/PatchSample";
-import { parseClampfitSummary } from "./domain";
+import { getSamples, saveClampfitSummaryAsPatchSample } from "./application";
 
 const frontendRedirectURL = envMust("FRONTEND_REDIRECT_URL");
 export function getRoutes() {
@@ -20,39 +18,51 @@ export function getRoutes() {
     res.send(JSON.stringify(req.oidc.user));
   });
 
-  router.post("/add_sample", authOr403(), async (req, res) => {
+  router.post(
+    "/add_sample",
+    authOr403(),
+    handlerWithBodyAndEmail(async ({ body, email }) => {
+      const name = body.name || "";
+      const clampfitPaste = body.clampfitPaste;
+      if (!clampfitPaste) {
+        throw new TypeError("Missing clampfitPaste");
+      }
+      await saveClampfitSummaryAsPatchSample({
+        email,
+        name,
+        clampfitSummary: clampfitPaste,
+      });
+      const samples = await getSamples({ email });
+      return { samples };
+    })
+  );
+
+  router.get(
+    "/samples",
+    authOr403(),
+    handlerWithBodyAndEmail(async ({ email }) => {
+      const samples = await getSamples({ email });
+      return { samples };
+    })
+  );
+
+  return router;
+}
+
+function handlerWithBodyAndEmail(
+  handler: (p: { body: Record<string, any>; email: string }) => Promise<object>
+) {
+  return async (req: express.Request, res: express.Response) => {
     try {
       const email = req.oidc.user!.email;
       if (!email) {
         return res.status(500).send("Missing email in oidc claims");
       }
-      const name = req.body.name || "";
-      const clampfitPaste = req.body.clampfitPaste;
-      if (!clampfitPaste) {
-        return res.status(400).send("Missing clampfitPaste");
-      }
-      const clampfitSample = parseClampfitSummary(clampfitPaste);
-      clampfitSample.name = name;
-      clampfitSample.email = email;
-      await getRepository(PatchSample).save(clampfitSample);
-      res.send(JSON.stringify({ ok: true }));
+      const resp = await handler({ body: req.body, email });
+      res.send(JSON.stringify(resp));
     } catch (err) {
       console.error(err);
       res.status(500).send("Server error");
     }
-  });
-
-  router.get("/samples", authOr403(), async (req, res) => {
-    const email = req.oidc.user!.email;
-    if (!email) {
-      return res.status(500).send("Missing email in oidc claims");
-    }
-    const samples = await getRepository(PatchSample).find({
-      where: { email: email },
-      order: { date: "DESC" },
-    });
-    res.send(JSON.stringify({ samples }));
-  });
-
-  return router;
+  };
 }
