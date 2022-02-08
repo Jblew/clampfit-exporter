@@ -1,7 +1,11 @@
 import express from "express";
 import { envMust } from "./utils";
 import { authOr403 } from "@/auth";
-import { getSamples, saveClampfitSummaryAsPatchSample } from "./application";
+import {
+  deleteSample,
+  getSamples,
+  saveClampfitSummaryAsPatchSample,
+} from "./application";
 
 const frontendRedirectURL = envMust("FRONTEND_REDIRECT_URL");
 export function getRoutes() {
@@ -32,6 +36,20 @@ export function getRoutes() {
         name,
         clampfitSummary: clampfitPaste,
       });
+      const samples = await getSamples({ email });
+      return { samples };
+    })
+  );
+
+  router.post(
+    "/delete_sample",
+    authOr403(),
+    handlerWithBodyAndEmail(async ({ body, email }) => {
+      const ID = body.ID;
+      if (!ID) {
+        throw new TypeError("Missing ID");
+      }
+      await deleteSample({ email, ID });
       const samples = await getSamples({ email });
       return { samples };
     })

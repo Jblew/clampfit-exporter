@@ -23,3 +23,16 @@ export async function saveClampfitSummaryAsPatchSample({
   clampfitSample.email = email;
   await getRepository(PatchSample).save(clampfitSample);
 }
+
+export async function deleteSample({
+  ID,
+  email,
+}: {
+  ID: string;
+  email: string;
+}) {
+  if (!ID) throw new TypeError("ID must be specified when deleting sample");
+  if (!email)
+    throw new TypeError("Email must be specified when deleting sample");
+  await getRepository(PatchSample).delete({ ID, email });
+}
