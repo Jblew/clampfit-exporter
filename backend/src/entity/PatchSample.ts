@@ -11,10 +11,10 @@ export class PatchSample implements domain.PatchSample {
   @PrimaryGeneratedColumn("uuid")
   ID!: string;
 
-  @Column()
+  @Column({ nullable: true })
   name!: string;
 
-  @Column()
+  @Column({ nullable: true })
   email!: string;
 
   @CreateDateColumn()
