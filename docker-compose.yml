@@ -11,6 +11,8 @@ services:
       OIDC_ISSUER_BASEURL: https://jblew.eu.auth0.com
       OIDC_AUTH_SECRET: ${OIDC_AUTH_SECRET}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+      # Hardcoded password is only for local development
+      POSTGRES_PASSWORD: 45tsgrbesv4qwWBSFGEG9642WRHT
     ports:
       - 3002:80
     depends_on:
@@ -25,6 +27,7 @@ services:
     image: postgres:14.1-alpine
     restart: always
     environment:
+      # Hardcoded password is only for local development
       POSTGRES_PASSWORD: 45tsgrbesv4qwWBSFGEG9642WRHT
     volumes:
       - db_pgdata:/var/lib/postgresql/data
