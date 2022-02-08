@@ -6,7 +6,7 @@ import { SampelsTableView } from "./SamplesTableView";
 export function Home() {
   return (
     <>
-      <Row>
+      <Row className="mt-5">
         <Col>
           <h1>Adding patch sample</h1>
         </Col>
@@ -16,7 +16,7 @@ export function Home() {
           <PatchForm />
         </Col>
       </Row>
-      <Row>
+      <Row className="mt-5">
         <Col>
           <h1>Previous samples</h1>
         </Col>
