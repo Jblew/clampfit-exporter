@@ -1,0 +1,14 @@
+EVENT STATISTICS for 
+Category 2.
+Trace Number 2
+Search Number 1
+  Event Property                Mean ± Standard Deviation              Count
+------------------            -----------------------------          ---------
+Amplitude (%s)                =  9.87292 ± 1.22061 pA                ( n = 3685 )
+Half-width                    =  1.14976 ± 1.29737 ms                ( n = 3685 )
+Instantaneous frequency       =  540.08300 ± 595.87100 Hz            ( n = 3684 )
+Interevent interval           =  16.27761 ± 29.89936 ms              ( n = 3684 )
+                                                                     (  )
+P(open) for specified level   =  0.0706262                           ( N/A )
+NP(open) for all levels       =  0.291961                            ( N/A )
+-------------------------------------------------------------------------------
