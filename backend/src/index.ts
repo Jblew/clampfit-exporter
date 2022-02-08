@@ -13,8 +13,14 @@ async function run() {
   await initDatabase();
 
   app.use(express.json());
+
+  morgan.token("email", function (req: any, res) {
+    return req.oidc?.user?.email || "no@auth";
+  });
   app.use(
-    morgan(":method :url :status :res[content-length] - :response-time ms")
+    morgan(
+      ":date[iso] :email :method :url :status :res[content-length] - :response-time ms"
+    )
   );
   app.use(routeBase, getAuthMiddleware());
   app.use(routeBase, getRoutes());
