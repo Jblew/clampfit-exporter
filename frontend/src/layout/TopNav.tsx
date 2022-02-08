@@ -5,7 +5,7 @@ import { NavAuth } from "./NavAuth";
 
 export function TopNav() {
   return (
-    <Navbar bg="light" expand="lg" className="mb-5">
+    <Navbar bg="dark" variant="dark" expand="lg" className="mb-5">
       <Container>
         <Navbar.Brand href="#home">Clampfit-exporter</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
