@@ -19,3 +19,15 @@ export async function saveClampfitPaste(data: {
   }
   return resp.samples;
 }
+
+export async function deleteSample(ID: string): Promise<PatchSample[]> {
+  const postData = { ID };
+  const resp: { samples: PatchSample[] } = await postToApi(
+    "/delete_sample",
+    postData
+  );
+  if (!resp.samples) {
+    throw new Error("Malformed response, samples field missing");
+  }
+  return resp.samples;
+}

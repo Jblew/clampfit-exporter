@@ -2,10 +2,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { PatchForm } from "../patch/PatchForm";
 import { useEffect, useState } from "react";
-import { getFromApi } from "api";
 import { PatchSample } from "appdomain";
 import { SamplesTable } from "./SamplesTable";
 import Alert from "react-bootstrap/Alert";
+import { deleteSample, fetchSamples } from "./api";
 
 export function PatchView() {
   const [samples, setSamples] = useState([] as PatchSample[]);
@@ -15,7 +15,7 @@ export function PatchView() {
   function loadSamples() {
     setError("");
     setLoading(true);
-    doLoadSamples().then(
+    fetchSamples().then(
       (samples) => {
         setLoading(false);
         setSamples(samples);
@@ -25,11 +25,21 @@ export function PatchView() {
         setLoading(false);
       }
     );
+  }
 
-    async function doLoadSamples(): Promise<PatchSample[]> {
-      const resp: { samples: PatchSample[] } = await getFromApi("/samples");
-      return resp.samples;
-    }
+  function doDeleteSample(ID: string) {
+    setError("");
+    setLoading(true);
+    deleteSample(ID).then(
+      (samples) => {
+        setLoading(false);
+        setSamples(samples);
+      },
+      (err) => {
+        setError(`${err}`);
+        setLoading(false);
+      }
+    );
   }
 
   useEffect(() => loadSamples(), []);
@@ -42,7 +52,9 @@ export function PatchView() {
       </Container>
       <Header>Previous samples</Header>
       <Container>
-        {samples.length && <SamplesTable samples={samples} />}
+        {samples.length && (
+          <SamplesTable samples={samples} deleteSample={doDeleteSample} />
+        )}
         {loading && <Alert variant="primary">Loading table...</Alert>}
         {error && <Alert variant="danger">Error: {error}</Alert>}
         {!error && !loading && !samples.length && <NoSamples />}

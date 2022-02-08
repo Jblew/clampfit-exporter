@@ -1,7 +1,14 @@
 import { PatchSample } from "appdomain";
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 
-export function SamplesTable({ samples }: { samples: PatchSample[] }) {
+export function SamplesTable({
+  samples,
+  deleteSample,
+}: {
+  samples: PatchSample[];
+  deleteSample(ID: string): void;
+}) {
   return (
     <Table striped bordered hover>
       <thead>
@@ -19,6 +26,15 @@ export function SamplesTable({ samples }: { samples: PatchSample[] }) {
             <td>{sample.name}</td>
             <td>{sample.amplitudeMeanPa}</td>
             <td>{sample.pOpenForSpecifiedLevel}</td>
+            <td>
+              <Button
+                onClick={() => deleteSample(sample.ID)}
+                size="sm"
+                variant="link"
+              >
+                🗑
+              </Button>
+            </td>
           </tr>
         ))}
       </tbody>
