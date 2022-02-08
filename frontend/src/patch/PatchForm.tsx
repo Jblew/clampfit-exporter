@@ -45,24 +45,24 @@ export function PatchForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <Form.Text className="text-muted">
-              This is just optional ;)
-            </Form.Text>
+            <Form.Text className="text-muted">This is optional</Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="exampleForm.clampfitPaste">
             <Form.Label>Paste clipboard from clampfit here</Form.Label>
             <Form.Control
               as="textarea"
-              rows={3}
+              rows={5}
               value={clampfitPaste}
               onChange={(e) => setClampfitPaste(e.target.value)}
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Add 🚀
-          </Button>
+          <p style={{ textAlign: "center" }}>
+            <Button variant="primary" type="submit">
+              Add 🚀
+            </Button>
+          </p>
         </Form>
       )}
 

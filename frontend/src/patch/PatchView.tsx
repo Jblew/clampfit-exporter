@@ -6,6 +6,7 @@ import { PatchSample } from "appdomain";
 import { SamplesTable } from "./SamplesTable";
 import Alert from "react-bootstrap/Alert";
 import { deleteSample, fetchSamples } from "./api";
+import { ConfigurableTable } from "./ConfigurableTable";
 
 export function PatchView() {
   const [samples, setSamples] = useState([] as PatchSample[]);
@@ -52,12 +53,16 @@ export function PatchView() {
       </Container>
       <Header>Previous samples</Header>
       <Container>
-        {samples.length && (
-          <SamplesTable samples={samples} deleteSample={doDeleteSample} />
-        )}
+        {!!samples.length &&
+          (<SamplesTable samples={samples} deleteSample={doDeleteSample} /> ||
+            "")}
         {loading && <Alert variant="primary">Loading table...</Alert>}
         {error && <Alert variant="danger">Error: {error}</Alert>}
         {!error && !loading && !samples.length && <NoSamples />}
+      </Container>
+      <Header>Configurable export table</Header>
+      <Container>
+        <ConfigurableTable rows={samples} />
       </Container>
     </>
   );
@@ -77,9 +82,9 @@ function Header({
   children: JSX.Element | JSX.Element[] | string;
 }) {
   return (
-    <Row className="mt-5">
+    <Row className="mt-5 mb-1">
       <Col>
-        <h1>{children}</h1>
+        <h1 style={{ textAlign: "center" }}>{children}</h1>
       </Col>
     </Row>
   );
