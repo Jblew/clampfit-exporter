@@ -13,5 +13,8 @@
 			"clampfit-exporter/.github/workflows/publish-backend-to-ghcr.yml",
 			"clampfit-exporter/.github/workflows/apply-k8.yml"
 		],
+		"vs-kubernetes": {
+			"vs-kubernetes.kubeconfig": "/Users/jedrzejlewandowski/git-repository/clampfit-exporter/_dev/kubeconfig.yml"
+		}
 	}
 }
