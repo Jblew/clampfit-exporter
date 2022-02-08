@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
 } from "typeorm";
 import * as domain from "@/domain";
 
@@ -70,4 +71,7 @@ export class PatchSample implements domain.PatchSample {
 
   @Column()
   npOpenForAllLevels!: string;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
