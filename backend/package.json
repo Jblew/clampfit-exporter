@@ -16,6 +16,7 @@
     "express-openid-connect": "2.5.2",
     "morgan": "1.10.0",
     "pg": "8.7.1",
+    "prom-client": "^14.0.1",
     "reflect-metadata": "0.1.13",
     "typeorm": "0.2.41"
   },

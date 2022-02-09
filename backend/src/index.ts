@@ -4,6 +4,7 @@ import { getAuthMiddleware } from "@/auth";
 import morgan from "morgan";
 import { initDatabase } from "./db";
 import { envMust } from "./utils";
+import { getMetricsRoutes, setupMetrics } from "./metrics";
 
 async function run() {
   const app = express();
@@ -11,6 +12,7 @@ async function run() {
   const routeBase = process.env.ROUTE_BASE || "/";
 
   await initDatabase();
+  setupMetrics();
 
   app.use(express.json());
 
@@ -24,6 +26,7 @@ async function run() {
   );
   app.use(routeBase, getAuthMiddleware());
   app.use(routeBase, getRoutes());
+  app.use(routeBase, getMetricsRoutes());
 
   app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
