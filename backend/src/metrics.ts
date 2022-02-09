@@ -38,6 +38,7 @@ export function getMetricsRoutes() {
       res.set("Content-Type", register.contentType);
       res.end(await register.metrics());
     } catch (ex) {
+      console.error(ex);
       res.status(500).end(ex);
     }
   });
