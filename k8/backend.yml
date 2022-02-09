@@ -22,7 +22,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: backend
-          image: ghcr.io/jblew/clampfit-exporter-backend:2.0.4
+          image: ghcr.io/jblew/clampfit-exporter-backend:${GIT_VERSION_TAG}
           ports: [{ containerPort: 80 }]
           env:
             - name: PORT
