@@ -15,17 +15,20 @@ export function setupMetrics() {
     },
   });
 
-  new Gauge({
+  // Disabled until I work out how to do select with in typeorm
+  /*new Gauge({
     name: "clampfit_exporter_emails_count",
     help: "Count of emails present in samples database",
     async collect() {
       const emailCount = await getRepository(PatchSample)
-        .createQueryBuilder()
-        .distinctOn(["email"])
-        .getCount();
+        .createQueryBuilder("samples")
+      Correct query is:
+      WITH agg AS (
+        SELECT DISTINCT email, COUNT(*) FROM samples GROUP BY email
+      ) SELECT COUNT(*) FROM agg
       this.set(emailCount);
     },
-  });
+  });*/
 }
 
 export function getMetricsRoutes() {
@@ -39,7 +42,7 @@ export function getMetricsRoutes() {
       res.end(await register.metrics());
     } catch (ex) {
       console.error(ex);
-      res.status(500).end(ex);
+      res.status(500).send(ex);
     }
   });
   return router;
