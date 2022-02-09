@@ -10,8 +10,6 @@ on:
     branches: ["release"]
     tags:
       - "v*"
-    paths:
-      - "frontend/*"
 
 env:
   REGISTRY: ghcr.io
