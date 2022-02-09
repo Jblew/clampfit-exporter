@@ -14,10 +14,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: false
+          fetch-depth: 0 # Fetch all history so that tags are available
       
       - name: "Envsubst variables in k8/*.yml"
         run: |
-          export IMAGES_VERSION_BASED_ON_GIT_TAG="${GIT_REF:1}" # Strips the v prefix
+          GIT_LATEST_TAG="$(git describe --abbrev=0 --tags)"
+          export IMAGES_VERSION_BASED_ON_GIT_TAG="${GIT_LATEST_TAG:1}" # Strips the v prefix
 
           for file in k8/*.yml
           do
@@ -26,8 +28,6 @@ jobs:
               cat  "${file}"
               echo "\n"
           done
-        env:
-          GIT_REF: "${{ github.ref_name }}"
 
       - name: "Prepare cert files"
         run: |
