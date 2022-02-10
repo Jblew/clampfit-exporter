@@ -6,7 +6,7 @@ module.exports = {
   password: process.env.POSTGRES_PASSWORD,
   database: "postgres",
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: ["dist/entity/**/*.js"],
   migrations: ["dist/migration/**/*.js"],
   subscribers: ["dist/subscriber/**/*.js"],
