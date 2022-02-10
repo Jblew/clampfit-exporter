@@ -9,7 +9,7 @@ const basename = "clampfit_exporter";
 const requestsCounter = new Counter({
   name: `${basename}_samples_count`,
   help: "Count of requests",
-  labelNames: ["200", "300", "400", "500"],
+  labelNames: ["method", "statusCode"] as const,
 });
 
 const samplesCountGauge = new Gauge({
@@ -44,8 +44,9 @@ export function getMetricsMiddleware() {
     next: express.NextFunction
   ) => {
     next();
-    const label = res.statusCode.toString().substring(0, 1) + "00";
-    requestsCounter.labels(label).inc(1);
+    requestsCounter
+      .labels({ method: req.method, statusCode: res.statusCode })
+      .inc(1);
   };
 }
 
