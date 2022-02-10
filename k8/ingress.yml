@@ -7,8 +7,8 @@ metadata:
     # Explanation: https://stackoverflow.com/questions/54506269/simple-ingress-from-host-with-microk8s
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/rewrite-target: "/$1"
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-        location /metrics {
+    nginx.ingress.kubernetes.io/server-snippet: |
+        location /api/monitoring {
           deny all;
           return 403;
         }
