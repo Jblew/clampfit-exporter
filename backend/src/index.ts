@@ -3,8 +3,7 @@ import { getRoutes } from "./router";
 import { getAuthMiddleware } from "@/auth";
 import morgan from "morgan";
 import { initDatabase } from "./db";
-import { envMust } from "./utils";
-import { getMetricsRoutes, setupMetrics } from "./metrics";
+import { getMetricsMiddleware, getMetricsRoutes } from "./metrics";
 
 async function run() {
   const app = express();
@@ -12,9 +11,9 @@ async function run() {
   const routeBase = process.env.ROUTE_BASE || "/";
 
   await initDatabase();
-  setupMetrics();
 
   app.use(express.json());
+  app.use(getMetricsMiddleware());
 
   morgan.token("email", function (req: any, res) {
     return req.oidc?.user?.email || "no@auth";
