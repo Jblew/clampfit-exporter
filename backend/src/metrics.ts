@@ -7,7 +7,7 @@ const prometheusSecret = "J2n2mZLtj3vHXifHiP8IIIYZCn0IO";
 const basename = "clampfit_exporter";
 
 const requestsCounter = new Counter({
-  name: `${basename}_samples_count`,
+  name: `${basename}_requests_count`,
   help: "Count of requests",
   labelNames: ["method", "statusCode"] as const,
 });
