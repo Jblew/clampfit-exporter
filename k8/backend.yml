@@ -51,3 +51,8 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: password
+            - name: PROMETHEUS_ACCESSKEY
+              valueFrom:
+                secretKeyRef:
+                  name: prometheus-accesskey
+                  key: key
