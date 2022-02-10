@@ -5,7 +5,6 @@ import express from "express";
 import { getEmailCount } from "./application";
 import { envMust } from "./utils";
 
-const prometheusSecret = envMust("PROMETHEUS_ACCESSKEY");
 const basename = "clampfit_exporter";
 
 const requestsCounter = new Counter({
@@ -51,9 +50,6 @@ export function getMetricsMiddleware() {
 export function getMetricsRoutes() {
   const router = express.Router();
   router.get("/metrics", async (req, res) => {
-    if (req.query.prometheus !== prometheusSecret) {
-      return res.status(403).send("Missing or wrong secret");
-    }
     try {
       res.set("Content-Type", register.contentType);
       res.end(await register.metrics());
