@@ -2,8 +2,9 @@ name: "apply k8"
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
+    tags: ["*"]
 
 jobs:
   build:
