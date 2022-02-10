@@ -53,5 +53,5 @@ export async function getEmailCount() {
   if (!count) {
     throw new Error("Database didn't return emails count");
   }
-  return count;
+  return parseInt(count);
 }
