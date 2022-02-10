@@ -23,7 +23,7 @@ const samplesCountGauge = new Gauge({
 });
 
 const emailsCountGauge = new Gauge({
-  name: `${basename}_samples_count`,
+  name: `${basename}_emails_count`,
   help: "Count of emails present in samples database",
   async collect() {
     return getEmailCount().catch((err) => {
