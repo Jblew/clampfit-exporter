@@ -3,8 +3,9 @@ import { getRepository } from "typeorm";
 import { PatchSample } from "./entity/PatchSample";
 import express from "express";
 import { getEmailCount } from "./application";
+import { envMust } from "./utils";
 
-const prometheusSecret = "J2n2mZLtj3vHXifHiP8IIIYZCn0IO";
+const prometheusSecret = envMust("PROMETHEUS_ACCESSKEY");
 const basename = "clampfit_exporter";
 
 const requestsCounter = new Counter({
@@ -26,10 +27,11 @@ const emailsCountGauge = new Gauge({
   name: `${basename}_emails_count`,
   help: "Count of emails present in samples database",
   async collect() {
-    return getEmailCount().catch((err) => {
+    const count = await getEmailCount().catch((err) => {
       console.warn("Cannot get emails count", err);
       return 0;
     });
+    this.set(count);
   },
 });
 

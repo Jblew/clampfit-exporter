@@ -13,6 +13,7 @@ services:
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       # Hardcoded password is only for local development
       POSTGRES_PASSWORD: 45tsgrbesv4qwWBSFGEG9642WRHT
+      PROMETHEUS_ACCESSKEY: 1tkiVE2ZpSIjsjuCi36cUihKPOp7P
     ports:
       - 3002:80
     depends_on:
