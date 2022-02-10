@@ -1,4 +1,4 @@
-import { getRepository } from "typeorm";
+import { getConnection, getManager, getRepository } from "typeorm";
 import { parseClampfitSummary } from "./domain";
 import { PatchSample } from "./entity/PatchSample";
 
@@ -35,4 +35,23 @@ export async function deleteSample({
   if (!email)
     throw new TypeError("Email must be specified when deleting sample");
   await getRepository(PatchSample).softDelete({ ID, email });
+}
+
+export async function getEmailCount() {
+  const outRows = await getManager().query(
+    `
+    WITH agg AS (
+      SELECT distinct email
+      FROM ${getConnection().getMetadata(PatchSample).tableName}
+      GROUP BY email
+      )
+    SELECT COUNT (*) as emails_count
+    FROM agg
+    `
+  );
+  const count = outRows?.[0]?.emails_count;
+  if (!count) {
+    throw new Error("Database didn't return emails count");
+  }
+  return count;
 }
