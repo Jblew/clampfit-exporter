@@ -7,11 +7,6 @@ metadata:
     # Explanation: https://stackoverflow.com/questions/54506269/simple-ingress-from-host-with-microk8s
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/rewrite-target: "/$1"
-    nginx.ingress.kubernetes.io/server-snippet: |
-       location ~* "^/api/metrics" {
-          deny all;
-          return 403;
-        }
   name: clampfit-exporter-ingress
 spec:
   rules:
@@ -36,3 +31,13 @@ spec:
     - hosts:
         - clamper.jblew.pl
       secretName: clampfit-exporter-tls6
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+   nginx.ingress.kubernetes.io/server-snippet: |
+       location ~* "^/api/metrics" {
+          deny all;
+          return 403;
+        }
