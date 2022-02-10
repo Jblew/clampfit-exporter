@@ -8,7 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/rewrite-target: "/$1"
     nginx.ingress.kubernetes.io/server-snippet: |
-        location /api/monitoring {
+       location ~* "^/api/metrics" {
           deny all;
           return 403;
         }
