@@ -1,5 +1,7 @@
 import { LevelsTableRow } from "appdomain";
+import { useState } from "react";
 import Table from "react-bootstrap/Table";
+import Form from "react-bootstrap/Form";
 
 // const data = {
 //   levelsTables: [
@@ -26,24 +28,42 @@ import Table from "react-bootstrap/Table";
 //   ],
 // };
 
-const levels = [0, 1, 2, 3];
-const columns = [
-  { key: "minDate", label: "From" },
-  { key: "maxDate", label: "to" },
-  { key: "npOpenForAllLevels", label: "NP(open) for all levels" },
-  ...levels.map((lvl) => ({
-    key: `currentMean_${lvl}`,
-    label: `Mean current ${lvl} lvl [pA]`,
-  })),
-  ...levels.map((lvl) => ({
-    key: `pOpenForSpecifiedLevel_${lvl}`,
-    label: `P(open) for ${lvl} lvl`,
-  })),
-];
-
 export function LevelsTable({ rows }: { rows: LevelsTableRow[] }) {
+  function getColumns(levelsTo: number) {
+    const levelsFrom = 1;
+    const levels = range(levelsFrom, levelsTo + 1);
+    return [
+      //{ key: "minDate", label: "From" },
+      //{ key: "maxDate", label: "to" },
+      { key: "npOpenForAllLevels", label: "NP(open) for all levels" },
+      ...levels.map((lvl) => ({
+        key: `currentMean_${lvl}`,
+        label: `Mean current ${lvl} lvl [pA]`,
+      })),
+      ...levels.map((lvl) => ({
+        key: `pOpenForSpecifiedLevel_${lvl}`,
+        label: `P(open) for ${lvl} lvl`,
+      })),
+    ];
+  }
+  const [levels, setLevels] = useState(4);
+  const [columns, setColumns] = useState(getColumns(levels));
+
+  function setLevelsAndColumns(levels: number) {
+    setLevels(levels);
+    setColumns(getColumns(levels));
+  }
+
   return (
     <>
+      <Form>
+        <Form.Label>Showing {levels} levels</Form.Label>
+        <Form.Range
+          max={8}
+          value={levels}
+          onChange={(e) => setLevelsAndColumns(parseInt(e.target.value))}
+        />
+      </Form>
       <Table
         striped
         bordered
@@ -71,3 +91,6 @@ export function LevelsTable({ rows }: { rows: LevelsTableRow[] }) {
     </>
   );
 }
+
+const range = (start: number, end: number) =>
+  Array.from({ length: end - start }, (v, k) => k + start);

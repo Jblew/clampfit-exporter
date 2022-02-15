@@ -59,7 +59,7 @@ export async function getEmailCount() {
 export async function getLevelsTables({ email }: { email: string }) {
   const groups = await getManager().query(
     `
-    SELECT "npOpenForAllLevels", max(date) as maxdate, min(date) as mindate
+    SELECT "npOpenForAllLevels", max(date) as maxdate, min(date) as mindate, COUNT(*) as count
     FROM ${getConnection().getMetadata(PatchSample).tableName}
     WHERE email = $1 AND date > current_date - interval '30' day
     GROUP BY "npOpenForAllLevels"
@@ -75,6 +75,7 @@ export async function getLevelsTables({ email }: { email: string }) {
       })),
       minDate: group.mindate,
       maxDate: group.maxdate,
+      count: group.count,
     }))
   );
 
