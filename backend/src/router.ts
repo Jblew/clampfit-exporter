@@ -3,6 +3,7 @@ import { envMust } from "./utils";
 import { authOr403 } from "@/auth";
 import {
   deleteSample,
+  getChannelTables,
   getSamples,
   saveClampfitSummaryAsPatchSample,
 } from "./application";
@@ -61,6 +62,15 @@ export function getRoutes() {
     handlerWithBodyAndEmail(async ({ email }) => {
       const samples = await getSamples({ email });
       return { samples };
+    })
+  );
+
+  router.get(
+    "/channel_tables",
+    authOr403(),
+    handlerWithBodyAndEmail(async ({ email }) => {
+      const channelTables = await getChannelTables({ email });
+      return { channelTables };
     })
   );
 

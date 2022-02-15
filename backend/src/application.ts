@@ -55,3 +55,17 @@ export async function getEmailCount() {
   }
   return parseInt(count);
 }
+
+export async function getChannelTables({ email }: { email: string }) {
+  const groups = await getManager().query(
+    `
+    SELECT "npOpenForAllLevels", max(date) as maxDate 
+    FROM ${getConnection().getMetadata(PatchSample).tableName}
+    WHERE email = $1
+    GROUP BY "npOpenForAllLevels"
+    ORDER BY maxDate DESC;
+`,
+    [email]
+  );
+  return groups;
+}
