@@ -69,8 +69,8 @@ export function getRoutes() {
     "/levels_tables",
     authOr403(),
     handlerWithBodyAndEmail(async ({ email }) => {
-      const channelTables = await getLevelsTables({ email });
-      return { channelTables };
+      const levelsTables = await getLevelsTables({ email });
+      return { levelsTables };
     })
   );
 
