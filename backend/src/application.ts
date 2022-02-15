@@ -59,23 +59,22 @@ export async function getEmailCount() {
 export async function getLevelsTables({ email }: { email: string }) {
   const groups = await getManager().query(
     `
-    SELECT "npOpenForAllLevels", max(date) as maxDate, min(date) as minDate
+    SELECT "npOpenForAllLevels", max(date) as maxdate, min(date) as mindate
     FROM ${getConnection().getMetadata(PatchSample).tableName}
     WHERE email = $1
     GROUP BY "npOpenForAllLevels"
-    ORDER BY maxDate DESC;
+    ORDER BY maxdate DESC;
 `,
     [email]
   );
-
   const tables = await Promise.all(
     groups.map(async (group: any) => ({
       ...(await getLevelsTableForSampleIdentifiedByNpOpen({
         email,
         npOpenForAllLevels: group.npOpenForAllLevels,
       })),
-      minDate: group.minDate,
-      maxDate: group.maxDate,
+      minDate: group.mindate,
+      maxDate: group.maxdate,
     }))
   );
 
