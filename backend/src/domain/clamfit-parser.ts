@@ -19,12 +19,12 @@ NP(open) for all levels       =  0.291961                            ( N/A )
 export function parseClampfitSummary(summary: string): PatchSample {
   const lines = summary.split("\n").map((s) => s.trim().toLowerCase());
   return {
-    category: parseInt(matchLine(lines, /^category\s+([0-9]+).*$/gi) || "-1"),
+    category: parseInt(matchLine(lines, /^category\s+([\-0-9]+).*$/gi) || "-1"),
     traceNumber: parseInt(
-      matchLine(lines, /^trace\snumber\s+([0-9]+).*$/gi) || "-1"
+      matchLine(lines, /^trace\snumber\s+([\-0-9]+).*$/gi) || "-1"
     ),
     searchNumber: parseInt(
-      matchLine(lines, /^search\snumber\s+([0-9]+).*$/gi) || "-1"
+      matchLine(lines, /^search\snumber\s+([\-0-9]+).*$/gi) || "-1"
     ),
     amplitudeMeanPa: getTabularizedMean(lines, "amplitude"),
     amplitudeSDPa: getTabularizedSD(lines, "amplitude"),
@@ -55,27 +55,27 @@ export function parseClampfitSummary(summary: string): PatchSample {
     ),
     pOpenForSpecifiedLevel: matchLine(
       lines,
-      /^p\(open\)\sfor\sspecified\slevel[^=]+=\s+([0-9\.]+).*$/gi
+      /^p\(open\)\sfor\sspecified\slevel[^=]+=\s+([\-0-9\.]+).*$/gi
     ),
     npOpenForAllLevels: matchLine(
       lines,
-      /^np\(open\)\sfor\sall\slevel[^=]+=\s+([0-9\.]+).*$/gi
+      /^np\(open\)\sfor\sall\slevel[^=]+=\s+([\-0-9\.]+).*$/gi
     ),
   } as PatchSample;
 }
 
 function getTabularizedMean(lines: string[], name: string) {
-  return matchLine(lines, RegExp(`^${name}[^=]+=\\s+([0-9\\.]+).*$`, "gi"));
+  return matchLine(lines, RegExp(`^${name}[^=]+=\\s+([\\-0-9\\.]+).*$`, "gi"));
 }
 
 function getTabularizedSD(lines: string[], name: string) {
-  return matchLine(lines, RegExp(`^${name}[^±]+±\\s+([0-9\\.]+).*$`, "gi"));
+  return matchLine(lines, RegExp(`^${name}[^±]+±\\s+([\\-0-9\\.]+).*$`, "gi"));
 }
 
 function getTabularizedCount(lines: string[], name: string) {
   return matchLine(
     lines,
-    RegExp(`^${name}[^±]+±[^=]+=\\s?([0-9\\.]+).*$`, "gi")
+    RegExp(`^${name}[^±]+±[^=]+=\\s?([\\-0-9\\.]+).*$`, "gi")
   );
 }
 
