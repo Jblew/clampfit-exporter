@@ -22,4 +22,13 @@ export interface PatchSample {
   npOpenForAllLevels: StringNumber;
 }
 
+export interface LevelsTableRowCore {
+  levels: number[];
+  npOpenForAllLevels: StringNumber;
+  minDate: string;
+  maxDate: string;
+}
+
+export type LevelsTableRow = LevelsTableRowCore & Record<string, any>;
+
 type StringNumber = string;

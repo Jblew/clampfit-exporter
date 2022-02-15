@@ -2,24 +2,27 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { PatchForm } from "../patch/PatchForm";
 import { useEffect, useState } from "react";
-import { PatchSample } from "appdomain";
+import { LevelsTableRow, PatchSample } from "appdomain";
 import { SamplesTable } from "./SamplesTable";
 import Alert from "react-bootstrap/Alert";
-import { deleteSample, fetchSamples } from "./api";
+import { deleteSample, fetchData } from "./api";
 import { ConfigurableTable } from "./ConfigurableTable";
+import { LevelsTable } from "./LevelsTable";
 
 export function PatchView() {
   const [samples, setSamples] = useState([] as PatchSample[]);
+  const [levelsTables, setLevelsTables] = useState([] as LevelsTableRow[]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   function loadSamples() {
     setError("");
     setLoading(true);
-    fetchSamples().then(
-      (samples) => {
+    fetchData().then(
+      (data) => {
         setLoading(false);
-        setSamples(samples);
+        setSamples(data.samples);
+        setLevelsTables(data.levelsTables);
       },
       (err) => {
         setError(`${err}`);
@@ -63,6 +66,11 @@ export function PatchView() {
       <Header>Configurable export table</Header>
       <Container>
         <ConfigurableTable rows={samples} />
+      </Container>
+
+      <Header>Levels tables</Header>
+      <Container>
+        <LevelsTable rows={levelsTables} />
       </Container>
     </>
   );

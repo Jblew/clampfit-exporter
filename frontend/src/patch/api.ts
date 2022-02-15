@@ -1,12 +1,29 @@
 import { getFromApi, postToApi } from "api";
-import { PatchSample } from "appdomain";
+import { PatchSample, LevelsTableRow } from "appdomain";
 
-export async function fetchSamples(): Promise<PatchSample[]> {
+export async function fetchData() {
+  return {
+    samples: await fetchSamples(),
+    levelsTables: await fetchLevelsTables(),
+  };
+}
+
+async function fetchSamples(): Promise<PatchSample[]> {
   const resp: { samples: PatchSample[] } = await getFromApi("/samples");
   if (!resp.samples) {
     throw new Error("Malformed response, samples field missing");
   }
   return resp.samples;
+}
+
+async function fetchLevelsTables(): Promise<LevelsTableRow[]> {
+  const resp: { levelsTables: LevelsTableRow[] } = await getFromApi(
+    "/levels_tables"
+  );
+  if (!resp.levelsTables) {
+    throw new Error("Malformed response, levelsTables field missing");
+  }
+  return resp.levelsTables;
 }
 
 export async function saveClampfitPaste(data: {
