@@ -91,7 +91,7 @@ async function getLevelsTableForSampleIdentifiedByNpOpen({
 }) {
   const rows = await getRepository(PatchSample).find({
     where: { email: email, npOpenForAllLevels },
-    order: { category: "DESC" },
+    order: { category: "ASC" },
   });
   const out: Record<string, any> = {};
   for (const row of rows) {
@@ -99,5 +99,12 @@ async function getLevelsTableForSampleIdentifiedByNpOpen({
     out[`pOpenForSpecifiedLevel_${row.category}`] = row.pOpenForSpecifiedLevel;
     out["npOpenForAllLevels"] = row.npOpenForAllLevels;
   }
+  out.levels = removeDuplicates(rows.map((row) => row.category));
   return out;
+}
+
+function removeDuplicates<T>(arr: T[]): T[] {
+  let s = new Set(arr);
+  let it = s.values();
+  return Array.from(it);
 }
