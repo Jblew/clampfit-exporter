@@ -59,7 +59,7 @@ export async function getEmailCount() {
 export async function getChannelTables({ email }: { email: string }) {
   const groups = await getManager().query(
     `
-    SELECT "npOpenForAllLevels", max(date) as maxDate 
+    SELECT "npOpenForAllLevels", max(date) as maxDate, min(date) as minDate
     FROM ${getConnection().getMetadata(PatchSample).tableName}
     WHERE email = $1
     GROUP BY "npOpenForAllLevels"
@@ -67,5 +67,37 @@ export async function getChannelTables({ email }: { email: string }) {
 `,
     [email]
   );
-  return groups;
+
+  const tables = await Promise.all(
+    groups.map(async (group: any) => ({
+      ...(await getChannelTable({
+        email,
+        npOpenForAllLevels: group.npOpenForAllLevels,
+      })),
+      minDate: group.minDate,
+      maxDate: group.maxDate,
+    }))
+  );
+
+  return tables;
+}
+
+async function getChannelTable({
+  email,
+  npOpenForAllLevels,
+}: {
+  email: string;
+  npOpenForAllLevels: string;
+}) {
+  const rows = await getRepository(PatchSample).find({
+    where: { email: email, npOpenForAllLevels },
+    order: { category: "DESC" },
+  });
+  const out: Record<string, any> = {};
+  for (const row of rows) {
+    out[`currentMean_${row.category}`] = row.amplitudeMeanPa;
+    out[`pOpenForSpecifiedLevel_${row.category}`] = row.pOpenForSpecifiedLevel;
+    out["npOpenForAllLevels"] = row.npOpenForAllLevels;
+  }
+  return out;
 }
