@@ -68,7 +68,7 @@ export function PatchView() {
         <ConfigurableTable rows={samples} />
       </Container>
 
-      <Header>Levels tables</Header>
+      <Header>Levels table (last 30 days)</Header>
       <Container>
         <LevelsTable rows={levelsTables} />
       </Container>
