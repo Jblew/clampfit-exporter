@@ -3,7 +3,7 @@ import { envMust } from "./utils";
 import { authOr403 } from "@/auth";
 import {
   deleteSample,
-  getChannelTables,
+  getLevelsTables,
   getSamples,
   saveClampfitSummaryAsPatchSample,
 } from "./application";
@@ -66,10 +66,10 @@ export function getRoutes() {
   );
 
   router.get(
-    "/channel_tables",
+    "/levels_tables",
     authOr403(),
     handlerWithBodyAndEmail(async ({ email }) => {
-      const channelTables = await getChannelTables({ email });
+      const channelTables = await getLevelsTables({ email });
       return { channelTables };
     })
   );

@@ -56,7 +56,7 @@ export async function getEmailCount() {
   return parseInt(count);
 }
 
-export async function getChannelTables({ email }: { email: string }) {
+export async function getLevelsTables({ email }: { email: string }) {
   const groups = await getManager().query(
     `
     SELECT "npOpenForAllLevels", max(date) as maxDate, min(date) as minDate
@@ -70,7 +70,7 @@ export async function getChannelTables({ email }: { email: string }) {
 
   const tables = await Promise.all(
     groups.map(async (group: any) => ({
-      ...(await getChannelTable({
+      ...(await getLevelsTableForSampleIdentifiedByNpOpen({
         email,
         npOpenForAllLevels: group.npOpenForAllLevels,
       })),
@@ -82,7 +82,7 @@ export async function getChannelTables({ email }: { email: string }) {
   return tables;
 }
 
-async function getChannelTable({
+async function getLevelsTableForSampleIdentifiedByNpOpen({
   email,
   npOpenForAllLevels,
 }: {
