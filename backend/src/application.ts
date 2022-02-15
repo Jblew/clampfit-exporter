@@ -61,7 +61,7 @@ export async function getLevelsTables({ email }: { email: string }) {
     `
     SELECT "npOpenForAllLevels", max(date) as maxdate, min(date) as mindate
     FROM ${getConnection().getMetadata(PatchSample).tableName}
-    WHERE email = $1
+    WHERE email = $1 AND date > current_date - interval '30' day
     GROUP BY "npOpenForAllLevels"
     ORDER BY maxdate DESC;
 `,
