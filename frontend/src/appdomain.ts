@@ -29,6 +29,7 @@ export interface LevelsTableRowCore {
   maxDate: string;
 }
 
-export type LevelsTableRow = LevelsTableRowCore & Record<string, any>;
+export type LevelsTableRow = LevelsTableRowCore &
+  Record<string, Record<number, any>>;
 
 type StringNumber = string;

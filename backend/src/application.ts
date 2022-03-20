@@ -1,5 +1,6 @@
 import { getConnection, getManager, getRepository } from "typeorm";
 import { parseClampfitSummary } from "./domain";
+import { DisplayPreferences } from "./entity/DisplayPreferences";
 import { PatchSample } from "./entity/PatchSample";
 
 export async function getSamples({ email }: { email: string }) {
@@ -56,12 +57,46 @@ export async function getEmailCount() {
   return parseInt(count);
 }
 
-export async function getLevelsTables({ email }: { email: string }) {
+export async function getPatchTableFields({
+  email,
+}: {
+  email: string;
+}): Promise<string[]> {
+  const displayPreferences = await getRepository(DisplayPreferences).findOne({
+    where: { email: email },
+  });
+  if (!displayPreferences) return [];
+  return displayPreferences?.patchTableFields;
+}
+
+export async function savePatchTableFields({
+  email,
+  patchTableFields,
+}: {
+  email: string;
+  patchTableFields: string[];
+}): Promise<string[]> {
+  const displayPreferences = await getRepository(DisplayPreferences).save({
+    // "Also supports partial updating since all undefined properties are skipped" — https://typeorm.io/#/repository-api
+    email: email,
+    patchTableFields,
+  });
+  if (!displayPreferences) return [];
+  return displayPreferences?.patchTableFields;
+}
+
+export async function getLevelsTables({
+  email,
+  days,
+}: {
+  email: string;
+  days: number;
+}) {
   const groups = await getManager().query(
     `
     SELECT "npOpenForAllLevels", max(date) as maxdate, min(date) as mindate, COUNT(*) as count
     FROM ${getConnection().getMetadata(PatchSample).tableName}
-    WHERE email = $1 AND date > current_date - interval '30' day
+    WHERE email = $1 AND date > current_date - interval '${days}' day
     GROUP BY "npOpenForAllLevels"
     ORDER BY maxdate DESC;
 `,
@@ -93,11 +128,14 @@ async function getLevelsTableForSampleIdentifiedByNpOpen({
     where: { email: email, npOpenForAllLevels },
     order: { category: "ASC" },
   });
-  const out: Record<string, any> = {};
+  const out: Record<string, Record<number, any>> = {};
   for (const row of rows) {
-    out[`currentMean_${row.category}`] = row.amplitudeMeanPa;
-    out[`pOpenForSpecifiedLevel_${row.category}`] = row.pOpenForSpecifiedLevel;
-    out["npOpenForAllLevels"] = row.npOpenForAllLevels;
+    for (const key of Object.keys(row)) {
+      if (!out[key]) {
+        out[key] = {};
+      }
+      out[key][row.category] = (row as any)[key];
+    }
   }
   out.levels = removeDuplicates(rows.map((row) => row.category));
   return out;

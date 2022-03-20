@@ -4,10 +4,11 @@ import Alert from "react-bootstrap/Alert";
 import { useState } from "react";
 import { saveClampfitPaste } from "./api";
 import { PatchSample } from "appdomain";
+
 export function PatchForm({
-  setSamples,
+  onSampleAdded,
 }: {
-  setSamples: (samples: PatchSample[]) => void;
+  onSampleAdded: (samples?: PatchSample[]) => void;
 }) {
   const [name, setName] = useState("");
   const [clampfitPaste, setClampfitPaste] = useState("");
@@ -21,7 +22,7 @@ export function PatchForm({
       (samples) => {
         setLoading(false);
         resetForm();
-        setSamples(samples);
+        onSampleAdded(samples);
       },
       (err) => {
         setError(`${err}`);
@@ -71,9 +72,3 @@ export function PatchForm({
     </>
   );
 }
-/*
- <Form.Group className="mb-3">
-        <Form.Label>Data</Form.Label>
-        <Form.Control placeholder={new Date().toISOString().substring(0, 10)} />
-      </Form.Group>
-      */

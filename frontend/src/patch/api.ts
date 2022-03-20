@@ -1,10 +1,14 @@
 import { getFromApi, postToApi } from "api";
 import { PatchSample, LevelsTableRow } from "appdomain";
 
-export async function fetchData() {
+export async function fetchData({
+  levelsLastDays,
+}: {
+  levelsLastDays: number;
+}) {
   return {
     samples: await fetchSamples(),
-    levelsTables: await fetchLevelsTables(),
+    levelsTables: await fetchLevelsTables({ days: levelsLastDays }),
   };
 }
 
@@ -16,9 +20,11 @@ async function fetchSamples(): Promise<PatchSample[]> {
   return resp.samples;
 }
 
-async function fetchLevelsTables(): Promise<LevelsTableRow[]> {
+async function fetchLevelsTables({ days }: { days?: number } = {}): Promise<
+  LevelsTableRow[]
+> {
   const resp: { levelsTables: LevelsTableRow[] } = await getFromApi(
-    "/levels_tables"
+    `/levels_tables?days=${days ? days : 30}`
   );
   if (!resp.levelsTables) {
     throw new Error("Malformed response, levelsTables field missing");
@@ -47,4 +53,27 @@ export async function deleteSample(ID: string): Promise<PatchSample[]> {
     throw new Error("Malformed response, samples field missing");
   }
   return resp.samples;
+}
+
+export async function fetchDisplayFields(): Promise<string[]> {
+  const resp: { patchTableFields: string[] } = await getFromApi(
+    `/display_preferences/patch_table_fields`
+  );
+  if (!resp.patchTableFields) {
+    throw new Error("Malformed response, field 'patchTableFields' is missing");
+  }
+  return resp.patchTableFields;
+}
+
+export async function saveDisplayFields(
+  patchTableFields: string[]
+): Promise<string[]> {
+  const resp: { patchTableFields: string[] } = await postToApi(
+    `/display_preferences/patch_table_fields`,
+    { patchTableFields }
+  );
+  if (!resp.patchTableFields) {
+    throw new Error("Malformed response, field 'patchTableFields' is missing");
+  }
+  return resp.patchTableFields;
 }

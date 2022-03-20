@@ -5,11 +5,28 @@ import { useEffect, useState } from "react";
 import { LevelsTableRow, PatchSample } from "appdomain";
 import { SamplesTable } from "./SamplesTable";
 import Alert from "react-bootstrap/Alert";
-import { deleteSample, fetchData } from "./api";
+import {
+  deleteSample,
+  fetchData,
+  fetchDisplayFields,
+  saveDisplayFields,
+} from "./api";
 import { ConfigurableTable } from "./ConfigurableTable";
 import { LevelsTable } from "./LevelsTable";
+import { DaysSelector } from "./DaysSelector";
+
+const defaultChecked = [
+  "traceNumber",
+  "amplitudeMeanPa",
+  "npOpenForAllLevels",
+  "pOpenForSpecifiedLevel",
+];
 
 export function PatchView() {
+  const [selectedFields, setSelectedFields] = useState(
+    defaultChecked as string[]
+  );
+  const [levelsLastDays, setLevelsLastDays] = useState(30);
   const [samples, setSamples] = useState([] as PatchSample[]);
   const [levelsTables, setLevelsTables] = useState([] as LevelsTableRow[]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +35,7 @@ export function PatchView() {
   function loadSamples() {
     setError("");
     setLoading(true);
-    fetchData().then(
+    fetchData({ levelsLastDays }).then(
       (data) => {
         setLoading(false);
         setSamples(data.samples);
@@ -46,13 +63,26 @@ export function PatchView() {
     );
   }
 
-  useEffect(() => loadSamples(), []);
+  function loadDisplayFields() {
+    fetchDisplayFields().then(
+      (fields) => setSelectedFields(fields),
+      (err) => console.error(err)
+    );
+  }
+
+  function setDisplayFields(fields: string[]) {
+    setSelectedFields(fields);
+    saveDisplayFields(fields).catch((err) => console.error(err));
+  }
+
+  useEffect(() => loadSamples(), [levelsLastDays]);
+  useEffect(() => loadDisplayFields(), []);
 
   return (
     <>
       <Header>Adding patch sample</Header>
       <Container>
-        <PatchForm setSamples={setSamples} />
+        <PatchForm onSampleAdded={(_) => loadSamples()} />
       </Container>
       <Header>Previous samples</Header>
       <Container>
@@ -65,12 +95,17 @@ export function PatchView() {
       </Container>
       <Header>Configurable export table</Header>
       <Container>
-        <ConfigurableTable rows={samples} />
+        <ConfigurableTable
+          rows={samples}
+          selectedFields={selectedFields}
+          onSelectedFieldsChanged={(fields) => setDisplayFields(fields)}
+        />
       </Container>
 
-      <Header>Levels table (last 30 days)</Header>
+      <Header>{`Levels table (last ${levelsLastDays} days)`}</Header>
       <Container>
-        <LevelsTable rows={levelsTables} />
+        <DaysSelector days={levelsLastDays} onDaysChanged={setLevelsLastDays} />
+        <LevelsTable rows={levelsTables} selectedFields={selectedFields} />
       </Container>
     </>
   );
