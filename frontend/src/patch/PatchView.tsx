@@ -102,7 +102,7 @@ export function PatchView() {
 
       <Header>Levels table (last 30 days)</Header>
       <Container>
-        <LevelsTable rows={levelsTables} />
+        <LevelsTable rows={levelsTables} selectedFields={selectedFields} />
       </Container>
     </>
   );
