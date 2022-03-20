@@ -57,12 +57,46 @@ export async function getEmailCount() {
   return parseInt(count);
 }
 
-export async function getLevelsTables({ email }: { email: string }) {
+export async function getPatchTableFields({
+  email,
+}: {
+  email: string;
+}): Promise<string[]> {
+  const displayPreferences = await getRepository(DisplayPreferences).findOne({
+    where: { email: email },
+  });
+  if (!displayPreferences) return [];
+  return displayPreferences?.patchTableFields;
+}
+
+export async function savePatchTableFields({
+  email,
+  patchTableFields,
+}: {
+  email: string;
+  patchTableFields: string[];
+}): Promise<string[]> {
+  const displayPreferences = await getRepository(DisplayPreferences).save({
+    // "Also supports partial updating since all undefined properties are skipped" — https://typeorm.io/#/repository-api
+    email: email,
+    patchTableFields,
+  });
+  if (!displayPreferences) return [];
+  return displayPreferences?.patchTableFields;
+}
+
+export async function getLevelsTables({
+  email,
+  days,
+}: {
+  email: string;
+  days: number;
+}) {
   const groups = await getManager().query(
     `
     SELECT "npOpenForAllLevels", max(date) as maxdate, min(date) as mindate, COUNT(*) as count
     FROM ${getConnection().getMetadata(PatchSample).tableName}
-    WHERE email = $1 AND date > current_date - interval '30' day
+    WHERE email = $1 AND date > current_date - interval '${days}' day
     GROUP BY "npOpenForAllLevels"
     ORDER BY maxdate DESC;
 `,
@@ -81,23 +115,6 @@ export async function getLevelsTables({ email }: { email: string }) {
   );
 
   return tables;
-}
-
-export async function getPatchTableFields({ email }: { email: string }): Promise<string[]> {
-  const displayPreferences = await getRepository(DisplayPreferences).findOne({
-    where: { email: email },
-  });
-  if(!displayPreferences) return []
-  return displayPreferences?.patchTableFields
-}
-
-export async function savePatchTableFields({ email, patchTableFields }: { email: string, patchTableFields: string[] }): Promise<string[]> {
-  const displayPreferences = await getRepository(DisplayPreferences).save({ // "Also supports partial updating since all undefined properties are skipped" — https://typeorm.io/#/repository-api
-    email: email,
-    patchTableFields
-  });
-  if(!displayPreferences) return []
-  return displayPreferences?.patchTableFields
 }
 
 async function getLevelsTableForSampleIdentifiedByNpOpen({

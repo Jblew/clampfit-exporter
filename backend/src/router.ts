@@ -70,8 +70,9 @@ export function getRoutes() {
   router.get(
     "/levels_tables",
     authOr403(),
-    handlerWithBodyAndEmail(async ({ email }) => {
-      const levelsTables = await getLevelsTables({ email });
+    handlerWithBodyAndEmail(async ({ email, query }) => {
+      const days = parseInt(query.days) || 30;
+      const levelsTables = await getLevelsTables({ email, days });
       return { levelsTables };
     })
   );
@@ -102,7 +103,11 @@ export function getRoutes() {
 }
 
 function handlerWithBodyAndEmail(
-  handler: (p: { body: Record<string, any>; email: string }) => Promise<object>
+  handler: (p: {
+    body: Record<string, any>;
+    email: string;
+    query: Record<string, any>;
+  }) => Promise<object>
 ) {
   return async (req: express.Request, res: express.Response) => {
     try {
@@ -110,7 +115,8 @@ function handlerWithBodyAndEmail(
       if (!email) {
         return res.status(500).send("Missing email in oidc claims");
       }
-      const resp = await handler({ body: req.body, email });
+      const query = req.query;
+      const resp = await handler({ body: req.body, email, query });
       res.send(JSON.stringify(resp));
     } catch (err) {
       console.error(err);

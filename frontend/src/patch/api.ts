@@ -16,9 +16,11 @@ async function fetchSamples(): Promise<PatchSample[]> {
   return resp.samples;
 }
 
-async function fetchLevelsTables(): Promise<LevelsTableRow[]> {
+async function fetchLevelsTables({ days }: { days?: number } = {}): Promise<
+  LevelsTableRow[]
+> {
   const resp: { levelsTables: LevelsTableRow[] } = await getFromApi(
-    "/levels_tables"
+    `/levels_tables?days=${days ? days : 30}`
   );
   if (!resp.levelsTables) {
     throw new Error("Malformed response, levelsTables field missing");
