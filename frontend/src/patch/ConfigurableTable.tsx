@@ -2,49 +2,46 @@ import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 
-const defaultChecked = ["traceNumber", "amplitudeMeanPa", "npOpenForAllLevels"];
-
 export function ConfigurableTable({
   rows,
+  selectedFields,
+  onSelectedFieldsChanged,
 }: {
   rows: Array<Record<string, any>>;
+  selectedFields: string[];
+  onSelectedFieldsChanged: (fields: string[]) => void;
 }) {
-  const [fieldsState, setFieldsState] = useState({} as Record<string, any>);
+  const [availableFields, setAvailableFields] = useState([] as string[]);
 
+  function getStateOfField(key: string) {
+    return selectedFields.indexOf(key) >= 0;
+  }
   function setStateOfField(key: string, checked: boolean) {
-    console.log("setStateOfField", key, true);
-    setFieldsState({
-      ...fieldsState,
-      [key]: checked,
-    });
-    console.log(fieldsState);
+    if (checked) {
+      onSelectedFieldsChanged([...selectedFields, key]);
+    } else if (selectedFields.indexOf(key) >= 0) {
+      onSelectedFieldsChanged(
+        [...selectedFields].splice(selectedFields.indexOf(key), 1)
+      );
+    }
   }
   useEffect(() => {
     const keys = removeDuplicates(rows.map((row) => Object.keys(row)).flat());
-    const newFieldsState = Object.assign(
-      {},
-      ...keys.map((key) => ({ [key]: false })),
-      ...defaultChecked.map((key) => ({ [key]: true }))
-    );
-    setFieldsState(newFieldsState);
+    setAvailableFields(keys);
   }, [rows]);
-
-  function getSelectedKeys(): string[] {
-    return Object.keys(fieldsState).filter((key) => fieldsState[key]);
-  }
 
   return (
     <>
       <Form>
-        {Object.keys(fieldsState).map((key, i) => (
+        {availableFields.map((key, i) => (
           <Form.Check
             inline
             key={key}
             type="checkbox"
             id={"selection-" + key}
             label={key}
-            checked={fieldsState[key]}
-            onChange={() => setStateOfField(key, !fieldsState[key])}
+            checked={getStateOfField(key)}
+            onChange={() => setStateOfField(key, !getStateOfField(key))}
           ></Form.Check>
         ))}
       </Form>
@@ -57,7 +54,7 @@ export function ConfigurableTable({
       >
         <thead>
           <tr>
-            {getSelectedKeys().map((key, j) => (
+            {selectedFields.map((key, j) => (
               <th key={j}>{key}</th>
             ))}
           </tr>
@@ -65,7 +62,7 @@ export function ConfigurableTable({
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
-              {getSelectedKeys().map((key, j) => (
+              {selectedFields.map((key, j) => (
                 <td key={j}>{row[key]}</td>
               ))}
             </tr>

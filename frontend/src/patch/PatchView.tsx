@@ -9,7 +9,17 @@ import { deleteSample, fetchData } from "./api";
 import { ConfigurableTable } from "./ConfigurableTable";
 import { LevelsTable } from "./LevelsTable";
 
+const defaultChecked = [
+  "traceNumber",
+  "amplitudeMeanPa",
+  "npOpenForAllLevels",
+  "pOpenForSpecifiedLevel",
+];
+
 export function PatchView() {
+  const [selectedFields, setSelectedFields] = useState(
+    defaultChecked as string[]
+  );
   const [samples, setSamples] = useState([] as PatchSample[]);
   const [levelsTables, setLevelsTables] = useState([] as LevelsTableRow[]);
   const [loading, setLoading] = useState(false);
@@ -65,7 +75,11 @@ export function PatchView() {
       </Container>
       <Header>Configurable export table</Header>
       <Container>
-        <ConfigurableTable rows={samples} />
+        <ConfigurableTable
+          rows={samples}
+          selectedFields={selectedFields}
+          onSelectedFieldsChanged={(fields) => setSelectedFields(fields)}
+        />
       </Container>
 
       <Header>Levels table (last 30 days)</Header>
