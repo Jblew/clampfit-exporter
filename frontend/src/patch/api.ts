@@ -1,10 +1,14 @@
 import { getFromApi, postToApi } from "api";
 import { PatchSample, LevelsTableRow } from "appdomain";
 
-export async function fetchData() {
+export async function fetchData({
+  levelsLastDays,
+}: {
+  levelsLastDays: number;
+}) {
   return {
     samples: await fetchSamples(),
-    levelsTables: await fetchLevelsTables({ days: 30 }),
+    levelsTables: await fetchLevelsTables({ days: levelsLastDays }),
   };
 }
 

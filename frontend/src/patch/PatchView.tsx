@@ -13,6 +13,7 @@ import {
 } from "./api";
 import { ConfigurableTable } from "./ConfigurableTable";
 import { LevelsTable } from "./LevelsTable";
+import { DaysSelector } from "./DaysSelector";
 
 const defaultChecked = [
   "traceNumber",
@@ -25,6 +26,7 @@ export function PatchView() {
   const [selectedFields, setSelectedFields] = useState(
     defaultChecked as string[]
   );
+  const [levelsLastDays, setLevelsLastDays] = useState(30);
   const [samples, setSamples] = useState([] as PatchSample[]);
   const [levelsTables, setLevelsTables] = useState([] as LevelsTableRow[]);
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ export function PatchView() {
   function loadSamples() {
     setError("");
     setLoading(true);
-    fetchData().then(
+    fetchData({ levelsLastDays }).then(
       (data) => {
         setLoading(false);
         setSamples(data.samples);
@@ -73,7 +75,7 @@ export function PatchView() {
     saveDisplayFields(fields).catch((err) => console.error(err));
   }
 
-  useEffect(() => loadSamples(), []);
+  useEffect(() => loadSamples(), [levelsLastDays]);
   useEffect(() => loadDisplayFields(), []);
 
   return (
@@ -100,8 +102,9 @@ export function PatchView() {
         />
       </Container>
 
-      <Header>Levels table (last 30 days)</Header>
+      <Header>{`Levels table (last ${levelsLastDays} days)`}</Header>
       <Container>
+        <DaysSelector days={levelsLastDays} onDaysChanged={setLevelsLastDays} />
         <LevelsTable rows={levelsTables} selectedFields={selectedFields} />
       </Container>
     </>
