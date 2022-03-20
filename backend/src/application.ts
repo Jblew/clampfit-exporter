@@ -1,5 +1,6 @@
 import { getConnection, getManager, getRepository } from "typeorm";
 import { parseClampfitSummary } from "./domain";
+import { DisplayPreferences } from "./entity/DisplayPreferences";
 import { PatchSample } from "./entity/PatchSample";
 
 export async function getSamples({ email }: { email: string }) {
@@ -80,6 +81,23 @@ export async function getLevelsTables({ email }: { email: string }) {
   );
 
   return tables;
+}
+
+export async function getPatchTableFields({ email }: { email: string }): Promise<string[]> {
+  const displayPreferences = await getRepository(DisplayPreferences).findOne({
+    where: { email: email },
+  });
+  if(!displayPreferences) return []
+  return displayPreferences?.patchTableFields
+}
+
+export async function savePatchTableFields({ email, patchTableFields }: { email: string, patchTableFields: string[] }): Promise<string[]> {
+  const displayPreferences = await getRepository(DisplayPreferences).save({ // "Also supports partial updating since all undefined properties are skipped" — https://typeorm.io/#/repository-api
+    email: email,
+    patchTableFields
+  });
+  if(!displayPreferences) return []
+  return displayPreferences?.patchTableFields
 }
 
 async function getLevelsTableForSampleIdentifiedByNpOpen({

@@ -4,8 +4,10 @@ import { authOr403 } from "@/auth";
 import {
   deleteSample,
   getLevelsTables,
+  getPatchTableFields,
   getSamples,
   saveClampfitSummaryAsPatchSample,
+  savePatchTableFields,
 } from "./application";
 
 const frontendRedirectURL = envMust("FRONTEND_REDIRECT_URL");
@@ -71,6 +73,28 @@ export function getRoutes() {
     handlerWithBodyAndEmail(async ({ email }) => {
       const levelsTables = await getLevelsTables({ email });
       return { levelsTables };
+    })
+  );
+
+  router.get(
+    "/display_preferences/patch_table_fields",
+    authOr403(),
+    handlerWithBodyAndEmail(async ({ email }) => {
+      const patchTableFields = await getPatchTableFields({ email });
+      return { patchTableFields };
+    })
+  );
+
+  router.post(
+    "/display_preferences/patch_table_fields",
+    authOr403(),
+    handlerWithBodyAndEmail(async ({ body, email }) => {
+      const patchTableFields = body.patchTableFields;
+      if (!patchTableFields) {
+        throw new TypeError("Missing field 'patchTableFields'");
+      }
+      await savePatchTableFields({ email, patchTableFields });
+      return { patchTableFields };
     })
   );
 

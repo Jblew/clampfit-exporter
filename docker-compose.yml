@@ -32,6 +32,7 @@ services:
       POSTGRES_PASSWORD: 45tsgrbesv4qwWBSFGEG9642WRHT
     volumes:
       - db_pgdata:/var/lib/postgresql/data
+
   adminer:
     image: adminer
     restart: always
