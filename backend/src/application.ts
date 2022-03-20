@@ -130,8 +130,10 @@ async function getLevelsTableForSampleIdentifiedByNpOpen({
   });
   const out: Record<string, Record<number, any>> = {};
   for (const row of rows) {
-    for (const key in Object.keys(row)) {
-      if (!out[key]) out[key] = {};
+    for (const key of Object.keys(row)) {
+      if (!out[key]) {
+        out[key] = {};
+      }
       out[key][row.category] = (row as any)[key];
     }
   }
