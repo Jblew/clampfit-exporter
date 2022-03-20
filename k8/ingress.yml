@@ -31,14 +31,3 @@ spec:
     - hosts:
         - clamper.jblew.pl
       secretName: clampfit-exporter-tls6
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: deny-metrics-public
-  annotations:
-   nginx.ingress.kubernetes.io/server-snippet: |
-       location ~* "^/api/metrics" {
-          deny all;
-          return 403;
-        }
