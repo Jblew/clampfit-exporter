@@ -80,7 +80,7 @@ export function PatchView() {
     <>
       <Header>Adding patch sample</Header>
       <Container>
-        <PatchForm setSamples={setSamples} />
+        <PatchForm onSampleAdded={(_) => loadSamples()} />
       </Container>
       <Header>Previous samples</Header>
       <Container>

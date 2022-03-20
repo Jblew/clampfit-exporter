@@ -20,9 +20,9 @@ export function ConfigurableTable({
     if (checked) {
       onSelectedFieldsChanged([...selectedFields, key]);
     } else if (selectedFields.indexOf(key) >= 0) {
-      onSelectedFieldsChanged(
-        [...selectedFields].splice(selectedFields.indexOf(key), 1)
-      );
+      const newFields = [...selectedFields];
+      newFields.splice(selectedFields.indexOf(key), 1);
+      onSelectedFieldsChanged(newFields);
     }
   }
   useEffect(() => {

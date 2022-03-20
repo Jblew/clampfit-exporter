@@ -1,7 +1,5 @@
 import { LevelsTableRow } from "appdomain";
-import { useState } from "react";
 import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
 
 export function LevelsTable({
   rows,
@@ -16,7 +14,7 @@ export function LevelsTable({
   const levelsTo = rows
     .map((row) => Math.max(...row.levels))
     .reduce((a, b) => Math.max(a, b), 1);
-  const levels = range(levelsFrom, levelsTo);
+  const levels = range(levelsFrom, levelsTo + 1);
 
   return (
     <>
