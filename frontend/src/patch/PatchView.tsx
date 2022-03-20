@@ -5,7 +5,12 @@ import { useEffect, useState } from "react";
 import { LevelsTableRow, PatchSample } from "appdomain";
 import { SamplesTable } from "./SamplesTable";
 import Alert from "react-bootstrap/Alert";
-import { deleteSample, fetchData } from "./api";
+import {
+  deleteSample,
+  fetchData,
+  fetchDisplayFields,
+  saveDisplayFields,
+} from "./api";
 import { ConfigurableTable } from "./ConfigurableTable";
 import { LevelsTable } from "./LevelsTable";
 
@@ -56,7 +61,20 @@ export function PatchView() {
     );
   }
 
+  function loadDisplayFields() {
+    fetchDisplayFields().then(
+      (fields) => setSelectedFields(fields),
+      (err) => console.error(err)
+    );
+  }
+
+  function setDisplayFields(fields: string[]) {
+    setSelectedFields(fields);
+    saveDisplayFields(fields).catch((err) => console.error(err));
+  }
+
   useEffect(() => loadSamples(), []);
+  useEffect(() => loadDisplayFields(), []);
 
   return (
     <>
@@ -78,7 +96,7 @@ export function PatchView() {
         <ConfigurableTable
           rows={samples}
           selectedFields={selectedFields}
-          onSelectedFieldsChanged={(fields) => setSelectedFields(fields)}
+          onSelectedFieldsChanged={(fields) => setDisplayFields(fields)}
         />
       </Container>
 
