@@ -128,11 +128,12 @@ async function getLevelsTableForSampleIdentifiedByNpOpen({
     where: { email: email, npOpenForAllLevels },
     order: { category: "ASC" },
   });
-  const out: Record<string, any> = {};
+  const out: Record<string, Record<number, any>> = {};
   for (const row of rows) {
-    out[`currentMean_${row.category}`] = row.amplitudeMeanPa;
-    out[`pOpenForSpecifiedLevel_${row.category}`] = row.pOpenForSpecifiedLevel;
-    out["npOpenForAllLevels"] = row.npOpenForAllLevels;
+    for (const key in Object.keys(row)) {
+      if (!out[key]) out[key] = {};
+      out[key][row.category] = (row as any)[key];
+    }
   }
   out.levels = removeDuplicates(rows.map((row) => row.category));
   return out;
