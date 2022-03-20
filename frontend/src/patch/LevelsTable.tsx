@@ -1,5 +1,6 @@
 import { LevelsTableRow } from "appdomain";
 import Table from "react-bootstrap/Table";
+import "./LevelsTable.css";
 
 export function LevelsTable({
   rows,
@@ -17,14 +18,8 @@ export function LevelsTable({
   const levels = range(levelsFrom, levelsTo + 1);
 
   return (
-    <>
-      <Table
-        striped
-        bordered
-        hover
-        className="mt-3"
-        style={{ overflowX: "auto", display: "block" }}
-      >
+    <div className="levels-table-overlay">
+      <Table striped bordered hover className="levels-table mt-3">
         <thead>
           <tr>
             {selectedFields.map((field, i) => (
@@ -51,7 +46,7 @@ export function LevelsTable({
           ))}
         </tbody>
       </Table>
-    </>
+    </div>
   );
 }
 

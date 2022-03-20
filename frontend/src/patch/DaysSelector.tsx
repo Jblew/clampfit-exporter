@@ -13,7 +13,7 @@ export function DaysSelector({
     <div
       style={{
         backgroundColor: "rgba(0,0,0,0.1)",
-        float: "right",
+        width: "100%",
         padding: "0.25rem",
         fontSize: "0.75rem",
         marginBottom: "0.25rem",
