@@ -13,6 +13,8 @@ spec:
               image: ghcr.io/jblew/postgres-backup-s3:1.0.2
               imagePullPolicy: IfNotPresent
               env:
+                - name: "S3_PREFIX"
+                  value: "clampfit_exporter_production_"
                 - name: "POSTGRES_HOST"
                   value: "db"
                 - name: "POSTGRES_DATABASE"
