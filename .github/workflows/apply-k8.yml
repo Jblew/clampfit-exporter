@@ -34,7 +34,7 @@ jobs:
           KUBECONFIG_PRODUCTION: ${{ secrets.KUBECONFIG_STAGING }}
         run: |
           mv "${K8_ENV_FILE}" k8/.env
-          echo "${KUBECONFIG_PRODUCTION}" > .kubeconfig.yml
+          echo "${KUBECONFIG_PRODUCTION}" > /kubeconfig.yml
 
       - name: "Envsubst variables in k8/*.yml"
         run: |
@@ -52,4 +52,4 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8
+          kubectl apply --kubeconfig /kubeconfig.yml -f k8
