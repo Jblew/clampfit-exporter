@@ -6,6 +6,9 @@ on:
       - main
       - staging
 
+env:
+  IMAGE_TAG: "${{ github.ref_name }}-${{ github.sha }}"
+
 jobs:
   build:
     strategy:
@@ -41,6 +44,7 @@ jobs:
             type=ref,event=pr
             type=sha
             type=sha,format=long
+            type=raw,value=${{ env.IMAGE_TAG }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -80,7 +84,7 @@ jobs:
 
       - name: "Envsubst variables in k8/*.yml"
         run: |
-          export DOCKER_IMAGE_SHA_TAG="sha-${{ github.sha }}"
+          export DOCKER_IMAGE_SHA_TAG="${{ env.IMAGE_TAG }}"
           export $(cat k8/.env | sed 's/#.*//g' | xargs)
 
           for file in k8/*.yml
