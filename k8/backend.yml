@@ -28,9 +28,9 @@ spec:
             - name: PORT
               value: "80"
             - name: BASE_URL
-              value: "https://clamper.jblew.pl/api"
+              value: "https://${CLAMPFIT_HOST}/api"
             - name: FRONTEND_REDIRECT_URL
-              value: "https://clamper.jblew.pl/"
+              value: "https://${CLAMPFIT_HOST}/"
             - name: OIDC_ISSUER_BASEURL
               valueFrom:
                 secretKeyRef:
