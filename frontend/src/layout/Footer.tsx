@@ -11,7 +11,8 @@ export function Footer() {
           <a href="https://jblewandowski.com">
             Jędrzej Bogumił Lewandowski, MD
           </a>{" "}
-          overnight on Feb 2022. All rights reversed on GNU GPL v3.
+          overnight on Feb 2022. Copyright 2022 — {new Date().getFullYear()} by
+          Jędrzej Bogumił Lewandowski. Licensed on GNU GPL v3.
         </p>
       </footer>
     </>
