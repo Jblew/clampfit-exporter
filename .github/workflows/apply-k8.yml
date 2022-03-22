@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
     tags: ["*"]
 
 jobs:
@@ -15,12 +16,31 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: false
-          fetch-depth: 0 # Fetch all history so that tags are available
-      
+          fetch-depth: 0 # Fetch all history so that tags are available (for GIT_LATEST_TAG)
+
+      - name: "Config for production"
+        if: github.ref_name == 'main'
+        env:
+          K8_ENV_FILE: "k8/.env.production"
+          KUBECONFIG_PRODUCTION: ${{ secrets.KUBECONFIG_PRODUCTION }}
+        run: |
+          mv "${K8_ENV_FILE}" k8/.env
+          echo "${KUBECONFIG_PRODUCTION}" > .kubeconfig.yml
+
+      - name: "Config for staging"
+        if: github.ref_name == 'staging'
+        env:
+          K8_ENV_FILE: "k8/.env.staging"
+          KUBECONFIG_PRODUCTION: ${{ secrets.KUBECONFIG_STAGING }}
+        run: |
+          mv "${K8_ENV_FILE}" k8/.env
+          echo "${KUBECONFIG_PRODUCTION}" > _kubeconfig.yml
+
       - name: "Envsubst variables in k8/*.yml"
         run: |
           GIT_LATEST_TAG="$(git describe --abbrev=0 --tags)"
           export IMAGES_VERSION_BASED_ON_GIT_TAG="${GIT_LATEST_TAG:1}" # Strips the v prefix
+          export $(cat k8/.env | sed 's/#.*//g' | xargs)
 
           for file in k8/*.yml
           do
@@ -30,22 +50,6 @@ jobs:
               echo "\n"
           done
 
-      - name: "Prepare cert files"
-        run: |
-          echo "${K8_CLIENT_CERTIFICATE}" > "$HOME/k8_x509_cert.crt"
-          echo "${K8_CLIENT_KEY}" > "$HOME/k8_x509_key.key"
-        env:
-          K8_CLIENT_CERTIFICATE: ${{ secrets.K8_CLIENT_CERTIFICATE }}
-          K8_CLIENT_KEY: ${{ secrets.K8_CLIENT_KEY }}
-
       - name: Deploy to Kubernetes
         run: |
-          kubectl \
-            --server "${K8_SERVER}" --insecure-skip-tls-verify \
-            --client-certificate "$HOME/k8_x509_cert.crt" \
-            --client-key "$HOME/k8_x509_key.key" \
-            apply \
-            -f "k8" --namespace "${K8_NAMESPACE}"
-        env:
-          K8_SERVER: "https://katedra2.jblew.pl:16443"
-          K8_NAMESPACE: clampfit-exporter
+          kubectl apply --kubeconfig _kubeconfig.yml -f k8

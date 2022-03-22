@@ -14,7 +14,7 @@ spec:
               imagePullPolicy: IfNotPresent
               env:
                 - name: "S3_PREFIX"
-                  value: "clampfit_exporter_production_"
+                  value: "${DB_BACKUP_PREFIX}"
                 - name: "POSTGRES_HOST"
                   value: "db"
                 - name: "POSTGRES_DATABASE"
