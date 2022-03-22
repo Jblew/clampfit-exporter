@@ -10,10 +10,11 @@ jobs:
   build:
     strategy:
       matrix:
-        - image_name: ${{ github.repository }}-backend
-          build_dir: backend
-        - image_name: ${{ github.repository }}-frontend
-          build_dir: frontend
+        include:
+          - image_name: ${{ github.repository }}-backend
+            build_dir: backend
+          - image_name: ${{ github.repository }}-frontend
+            build_dir: frontend
     runs-on: ubuntu-latest
     permissions:
       contents: read
