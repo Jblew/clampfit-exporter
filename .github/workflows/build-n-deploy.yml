@@ -42,8 +42,6 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=sha
-            type=sha,format=long
             type=raw,value=${{ env.IMAGE_TAG }}
 
       - name: Build and push Docker image
