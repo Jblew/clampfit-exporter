@@ -8,8 +8,8 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-        - name: e2e-tests:${DOCKER_IMAGE_SHA_TAG}
-          image: ghcr.io/jblew/postgres-backup-s3:1.0.2
+        - name: e2e-tests
+          image: ghcr.io/jblew/clampfit-exporter-e2e:${DOCKER_IMAGE_SHA_TAG}
           env:
             - name: "CYPRESS_BASE_URL"
               value: "https://${CLAMPFIT_HOST}/"
