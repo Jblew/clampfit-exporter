@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: e2e-tests
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: e2e-tests:${DOCKER_IMAGE_SHA_TAG}
+          image: ghcr.io/jblew/postgres-backup-s3:1.0.2
