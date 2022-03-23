@@ -1,11 +1,17 @@
 version: "3.8"
 
+# Local E2E recipe:
+# docker-compose up -d db
+# dcbr backend
+# (cd frontend && npm run start)
+# (cd e2e && npm run test) or npm run open
+
 services:
   backend:
     build: backend
     environment:
       PORT: 80
-      ROUTE_BASE: '/api'
+      ROUTE_BASE: "/api"
       BASE_URL: http://localhost:3002/api
       FRONTEND_REDIRECT_URL: http://localhost:3000/
       OIDC_ISSUER_BASEURL: https://jblew.eu.auth0.com
