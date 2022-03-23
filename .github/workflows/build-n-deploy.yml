@@ -18,6 +18,8 @@ jobs:
             build_dir: backend
           - image_name: ${{ github.repository }}-frontend
             build_dir: frontend
+          - image_name: ${{ github.repository }}-e2e
+            build_dir: e2e
     runs-on: ubuntu-latest
     permissions:
       contents: read
