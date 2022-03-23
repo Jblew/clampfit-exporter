@@ -73,7 +73,7 @@ const stateComponents: Record<AuthStateName | "default", StateComponent> = {
 
 function Layout({ children }: { children: JSX.Element[] | JSX.Element }) {
   return (
-    <Row>
+    <Row style={{ marginTop: "8rem", marginBottom: "8rem" }}>
       <Col style={{ textAlign: "center" }}>{children}</Col>
     </Row>
   );

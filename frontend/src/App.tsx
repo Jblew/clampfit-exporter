@@ -1,7 +1,6 @@
-import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { TopNav, Home } from "./layout";
+import { TopNav, Home, Footer } from "./layout";
 import Container from "react-bootstrap/Container";
 import { AuthGuard } from "layout";
 
@@ -13,6 +12,7 @@ function App() {
         <AuthGuard>
           <Home />
         </AuthGuard>
+        <Footer />
       </Container>
     </>
   );

@@ -14,6 +14,8 @@ describe("example to-do app", () => {
   });
 
   it("displays info on Jędrzej", () => {
-    cy.findByText("Jędrzej Lewandowski", { exact: false }).should("exist");
+    cy.findByText("Jędrzej Bogumił Lewandowski, MD", { exact: false }).should(
+      "exist"
+    );
   });
 });
