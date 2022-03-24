@@ -1,15 +1,18 @@
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: e2e-tests
 spec:
-  backoffLimit: 4
-  template:
+  schedule: "2 12 * * *"
+  jobTemplate:
     spec:
-      restartPolicy: OnFailure
-      containers:
-        - name: e2e-tests
-          image: ghcr.io/jblew/clampfit-exporter-e2e:${DOCKER_IMAGE_SHA_TAG}
-          env:
-            - name: "CYPRESS_BASE_URL"
-              value: "https://${CLAMPFIT_HOST}/"
+      backoffLimit: 4
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: e2e-tests
+              image: ghcr.io/jblew/clampfit-exporter-e2e:${DOCKER_IMAGE_SHA_TAG}
+              env:
+                - name: "CYPRESS_BASE_URL"
+                  value: "https://${CLAMPFIT_HOST}/"
