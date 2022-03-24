@@ -30,18 +30,18 @@ Cypress.Commands.add("login", (overrides = {}) => {
   Cypress.log({
     name: "loginViaAuth0",
   });
-  const tenantURL = Cypress.env("oidc_issuer_baseurl");
+  const tenantURL = Cypress.env("OIDC_ISSUER_BASEURL");
   const options = {
     method: "POST",
     url: `${tenantURL}/oauth/token`,
     body: {
       grant_type: "password",
-      username: Cypress.env("auth_username"),
-      password: Cypress.env("auth_password"),
+      username: Cypress.env("AUTH_USERNAME"),
+      password: Cypress.env("AUTH_PASSWORD"),
       audience: `${tenantURL}/api/v2/`,
       scope: "openid profile email",
-      client_id: Cypress.env("oidc_client_id"),
-      client_secret: Cypress.env("oidc_auth_secret"),
+      client_id: Cypress.env("OIDC_CLIENT_ID"),
+      client_secret: Cypress.env("OIDC_AUTH_SECRET"),
     },
   };
   cy.request(options).then((resp) => {

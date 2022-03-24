@@ -16,3 +16,31 @@ spec:
               env:
                 - name: "CYPRESS_BASE_URL"
                   value: "https://${CLAMPFIT_HOST}/"
+                - name: "CYPRESS_OIDC_ISSUER_BASEURL"
+                  valueFrom:
+                    secretKeyRef:
+                      name: oidc
+                      key: issuer_baseurl
+                - name: "CYPRESS_OIDC_CLIENT_ID"
+                  valueFrom:
+                    secretKeyRef:
+                      name: oidc
+                      key: client_id
+                - name: "CYPRESS_OIDC_AUTH_SECRET"
+                  valueFrom:
+                    secretKeyRef:
+                      name: oidc
+                      key: auth_secret
+                - name: "CYPRESS_AUTH_USERNAME"
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-auth-credentials
+                      key: username
+                - name: "CYPRESS_AUTH_PASSWORD"
+                  valueFrom:
+                    secretKeyRef:
+                      name: e2e-auth-credentials
+                      key: username
+                
+                    
+                
