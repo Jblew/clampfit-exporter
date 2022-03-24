@@ -25,3 +25,32 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import "@testing-library/cypress/add-commands";
+
+Cypress.Commands.add("login", (overrides = {}) => {
+  Cypress.log({
+    name: "loginViaAuth0",
+  });
+  const tenantURL = Cypress.env("oidc_issuer_baseurl");
+  const options = {
+    method: "POST",
+    url: `${tenantURL}/oauth/token`,
+    body: {
+      grant_type: "password",
+      username: Cypress.env("auth_username"),
+      password: Cypress.env("auth_password"),
+      audience: `${tenantURL}/api/v2/`,
+      scope: "openid profile email",
+      client_id: Cypress.env("oidc_client_id"),
+      client_secret: Cypress.env("oidc_auth_secret"),
+    },
+  };
+  cy.request(options).then((resp) => {
+    const { id_token } = resp.body;
+    const reqConf = {
+      method: "POST",
+      url: "/api/auth_callback",
+      body: { id_token }, // Must pass only the access_token. Passing full response from oauth causes the 'missing at_hash error'
+    };
+    cy.request(reqConf);
+  });
+});
