@@ -13,6 +13,10 @@ spec:
           containers:
             - name: e2e-tests
               image: ghcr.io/jblew/clampfit-exporter-e2e:${DOCKER_IMAGE_SHA_TAG}
+              resources:
+                limits:
+                  cpu: "500m"
+                  memory: "500Mi"
               env:
                 - name: "CYPRESS_BASE_URL"
                   value: "https://${CLAMPFIT_HOST}/"
