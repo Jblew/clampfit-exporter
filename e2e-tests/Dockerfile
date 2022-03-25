@@ -12,4 +12,4 @@ ENV NO_COLOR=1
 # Disable generating and storing cypress video
 ENV CYPRESS_VIDEO=false 
 
-CMD npm run test
+CMD run
