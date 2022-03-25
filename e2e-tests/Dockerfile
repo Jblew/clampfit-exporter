@@ -1,4 +1,4 @@
-FROM cypress/included:9.4.1
+FROM cypress/browsers:node16.14.0-slim-chrome99-ff97
 WORKDIR /e2e
 COPY . /e2e
 
@@ -12,4 +12,4 @@ ENV NO_COLOR=1
 # Disable generating and storing cypress video
 ENV CYPRESS_VIDEO=false 
 
-CMD run
+CMD npx cypress run --browser chrome
