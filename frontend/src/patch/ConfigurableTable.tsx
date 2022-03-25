@@ -49,7 +49,7 @@ export function ConfigurableTable({
         striped
         bordered
         hover
-        className="mt-3"
+        className="mt-3 table-sm"
         style={{ overflowX: "auto", display: "block" }}
       >
         <thead>

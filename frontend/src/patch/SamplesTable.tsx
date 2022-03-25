@@ -10,7 +10,7 @@ export function SamplesTable({
   deleteSample(ID: string): void;
 }) {
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover className="table-sm">
       <thead>
         <tr>
           <th>#</th>
