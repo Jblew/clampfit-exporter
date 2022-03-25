@@ -45,10 +45,6 @@ spec:
                     secretKeyRef:
                       name: e2e-auth-credentials
                       key: password
-                - name: "NO_COLOR" # Disable ASCII color codes in cypress output
-                  value: "1"
-                - name: "CYPRESS_VIDEO" # Disable generating and storing cypress video
-                  value: "false"
                 
                     
                 
