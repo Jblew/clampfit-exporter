@@ -17,6 +17,9 @@ spec:
                 limits:
                   cpu: "500m"
                   memory: "500Mi"
+                requests:
+                  cpu: "10m"
+                  memory: "20Mi"
               env:
                 - name: "CYPRESS_BASE_URL"
                   value: "https://${CLAMPFIT_HOST}/"
