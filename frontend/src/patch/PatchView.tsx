@@ -84,15 +84,7 @@ export function PatchView() {
       <Container>
         <PatchForm onSampleAdded={(_) => loadSamples()} />
       </Container>
-      <Header>Previous samples</Header>
-      <Container>
-        {!!samples.length &&
-          (<SamplesTable samples={samples} deleteSample={doDeleteSample} /> ||
-            "")}
-        {loading && <Alert variant="primary">Loading table...</Alert>}
-        {error && <Alert variant="danger">Error: {error}</Alert>}
-        {!error && !loading && !samples.length && <NoSamples />}
-      </Container>
+
       <Header>Configurable export table</Header>
       <Container>
         <ConfigurableTable
@@ -106,6 +98,16 @@ export function PatchView() {
       <Container>
         <DaysSelector days={levelsLastDays} onDaysChanged={setLevelsLastDays} />
         <LevelsTable rows={levelsTables} selectedFields={selectedFields} />
+      </Container>
+
+      <Header>Previous samples</Header>
+      <Container>
+        {!!samples.length &&
+          (<SamplesTable samples={samples} deleteSample={doDeleteSample} /> ||
+            "")}
+        {loading && <Alert variant="primary">Loading table...</Alert>}
+        {error && <Alert variant="danger">Error: {error}</Alert>}
+        {!error && !loading && !samples.length && <NoSamples />}
       </Container>
     </>
   );

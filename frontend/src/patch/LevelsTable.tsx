@@ -19,7 +19,7 @@ export function LevelsTable({
 
   return (
     <div className="levels-table-overlay">
-      <Table striped bordered hover className="levels-table mt-3">
+      <Table striped bordered hover className="levels-table mt-3 table-sm">
         <thead>
           <tr>
             {selectedFields.map((field, i) => (
